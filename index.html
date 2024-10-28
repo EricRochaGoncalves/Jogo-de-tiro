@@ -272,50 +272,50 @@ Claro! Vamos corrigir o seu código e aumentar o tamanho do ícone do menu hambu
         }
 
         function flashPlayer() {
-            const originalColor = player.color;
-            let flashes = 0;
-            const flashInterval = setInterval(() => {
-                player.color = (flplayer.color = (flashes % 2 === 0) ? 'red' : originalColor;
-                flashes++;
-                if (flashes >= 6) {
-                    clearInterval(flashInterval);
-                    player.color = originalColor; // Restaura a cor original
-                }
-            }, 200);
+    const originalColor = player.color;
+    let flashes = 0;
+    const flashInterval = setInterval(() => {
+        player.color = (flashes % 2 === 0) ? 'red' : originalColor; // Correção aqui
+        flashes++;
+        if (flashes >= 6) {
+            clearInterval(flashInterval);
+            player.color = originalColor; // Restaura a cor original
         }
+    }, 200);
+}
 
-        function gameOver() {
-            clearInterval(gameInterval);
-            document.getElementById('message').innerText = 'Game Over! Você foi atingido!';
-            document.getElementById('restartButton').style.display = 'block';
-        }
+function gameOver() {
+    clearInterval(gameInterval);
+    document.getElementById('message').innerText = 'Game Over! Você foi atingido!';
+    document.getElementById('restartButton').style.display = 'block';
+}
 
-        function showXP() {
-            xp++;
-            updateXPDisplay();
-        }
+function showXP() {
+    xp++;
+    updateXPDisplay();
+}
 
-        function updateXPDisplay() {
-            xpCounter.innerText = `XP: ${xp}`;
-        }
+function updateXPDisplay() {
+    xpCounter.innerText = `XP: ${xp}`;
+}
 
-        function moveLeft() {
-            if (player.x > 0) {
-                player.x -= 20; // Move o jogador para a esquerda
-            }
-        }
+function moveLeft() {
+    if (player.x > 0) {
+        player.x -= 20; // Move o jogador para a esquerda
+    }
+}
 
-        function moveRight() {
-            if (player.x < canvas.width - player.width) {
-                player.x += 20; // Move o jogador para a direita
-            }
-        }
+function moveRight() {
+    if (player.x < canvas.width - player.width) {
+        player.x += 20; // Move o jogador para a direita
+    }
+}
 
-        function megaShot() {
-            for (let i = 0; i < 5; i++) {
-                shoot(); // Dispara 5 balas de uma vez
-            }
-        }
+function megaShot() {
+    for (let i = 0; i < 5; i++) {
+        shoot(); // Dispara 5 balas de uma vez
+    }
+}
     </script>
 </body>
 </html>
