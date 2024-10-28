@@ -100,6 +100,12 @@
         <button class="button" onclick="shoot()">Atirar</button>
     </div>
 
+    <div id="message" class="message"></div>
+    
+    <div id="creatorMessage">
+        Jogo criado por <a href="https://portif-lio-ericgoncalves.onrender.com/" target="_blank" style="color: #28a745;">Eric Gonçalves</a>
+    </div>
+
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -175,35 +181,24 @@
         }
 
         function shoot() {
-    // Adiciona três balas para criar um efeito de dispersão
-    const bulletConfigs = [
-        { offsetX: -5, angle: -0.1 }, // Bala esquerda
-        { offsetX: 0, angle: 0 }, // Bala central
-        { offsetX: 5, angle: 0.1 } // Bala direita
-    ];
+            const bullet = {
+                x: player.x + player.width / 2 - 2.5,
+                y: player.y,
+                width: 5,
+                height: 10,
+                speed: 5
+            };
+            bullets.push(bullet);
+        }
 
-    bulletConfigs.forEach(config => {
-        const bullet = {
-            x: player.x + player.width / 2 - 2.5 + config.offsetX,
-            y: player.y,
-            width: 5,
-            height: 10,
-            speed: 5,
-            angle: config.angle
-        };
-        bullets.push(bullet);
-    });
-}
-
-function updateBullets() {
-    ctx.fillStyle = 'yellow';
-    bullets.forEach(bullet => {
-        bullet.x += Math.sin(bullet.angle) * bullet.speed; // Movimenta a bala com base no ângulo
-        bullet.y -= Math.cos(bullet.angle) * bullet.speed; // Movimenta a bala para cima
-        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-    });
-    bullets = bullets.filter(bullet => bullet.y > 0 && bullet.x > 0 && bullet.x < canvas.width);
-}
+        function updateBullets() {
+            ctx.fillStyle = 'yellow';
+            bullets.forEach(bullet => {
+                bullet.y -= bullet.speed;
+                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+            });
+            bullets = bullets.filter(bullet => bullet.y > 0);
+        }
 
         function checkCollisions() {
             bullets.forEach((bullet, bulletIndex) => {
