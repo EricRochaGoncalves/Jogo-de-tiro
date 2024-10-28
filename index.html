@@ -233,7 +233,8 @@ function shoot() {
             width: 5,
             height: 10,
             speed: 5,
-            angle: angle // Adiciona o ângulo de dispersão
+            angle: angle, // Adiciona o ângulo de dispersão
+            isMega: false // Para diferenciação das balas normais
         };
         bullets.push(bullet);
     });
@@ -262,7 +263,7 @@ function updateBullets() {
         } else {
             bullet.y -= bullet.speed * Math.cos(bullet.angle);
             bullet.x += bullet.speed * Math.sin(bullet.angle);
-            
+            ctx.fillStyle = 'yellow'; // A cor da bala normal
             ctx.beginPath();
             ctx.roundRect(bullet.x, bullet.y, bullet.width, bullet.height, 5); // Adiciona borda arredondada
             ctx.fill();
@@ -302,6 +303,7 @@ function checkCollisions() {
                 flashPlayer();
             }
         }
+        enemy.y += enemy.speed; // Faz o inimigo descer
     });
 }
 
