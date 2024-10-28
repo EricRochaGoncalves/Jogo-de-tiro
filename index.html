@@ -190,9 +190,21 @@
             y: player.y,
             width: 5,
             height: 10,
-            speed: 5
+            speed: 10 // Aumenta a velocidade das balas
         };
         bullets.push(bullet);
+    }
+}
+
+// Atualiza a posição das balas em cada frame
+function updateBullets() {
+    for (let i = bullets.length - 1; i >= 0; i--) {
+        bullets[i].y -= bullets[i].speed; // Move a bala para cima na tela
+
+        // Remove a bala se sair da tela
+        if (bullets[i].y < 0) {
+            bullets.splice(i, 1);
+        }
     }
 }
 
