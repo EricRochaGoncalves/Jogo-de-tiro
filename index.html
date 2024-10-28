@@ -406,6 +406,63 @@ function toggleMenu() {
     const menuContent = document.getElementById('menuContent');
     menuContent.style.display = (menuContent.style.display === 'block') ? 'none' : 'block';
 }
+let hearts; // Adicione esta linha para armazenar os corações
+
+function initializeGame() {
+    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
+    bullets = [];
+    enemies = [];
+    playerHits = 0;
+    xp = 0;
+    hearts = 5; // Inicializa o número de corações
+    updateHeartsDisplay(); // Chama a função para atualizar os corações
+    document.getElementById('message').innerText = '';
+}
+
+function checkCollisions() {
+    bullets.forEach((bullet, bulletIndex) => {
+        enemies.forEach((enemy, enemyIndex) => {
+            if (bullet.x < enemy.x + enemy.width &&
+                bullet.x + bullet.width > enemy.x &&
+                bullet.y < enemy.y + enemy.height &&
+                bullet.y + bullet.height > enemy.y) {
+                enemy.hitCount++;
+                if (enemy.hitCount <= 3) {
+                    enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
+                } else {
+                    showXP();
+                    bullets.splice(bulletIndex, 1);
+                    enemies.splice(enemyIndex, 1);
+                }
+            }
+        });
+    });
+
+    enemies.forEach(enemy => {
+        if (enemy.y + enemy.height >= player.y && 
+            enemy.x < player.x + player.width &&
+            enemy.x + enemy.width > player.x) {
+            playerHits++;
+            hearts--; // Diminui o número de corações
+            updateHeartsDisplay(); // Atualiza a exibição dos corações
+            if (hearts <= 0) {
+                gameOver();
+            } else {
+                flashPlayer();
+            }
+        }
+    });
+}
+
+function updateHeartsDisplay() {
+    const heartsContainer = document.getElementById('heartsContainer');
+    heartsContainer.innerHTML = ''; // Limpa os corações existentes
+    for (let i = 0; i < hearts; i++) {
+        heartsContainer.innerHTML += '<div class="heart"></div>'; // Adiciona corações
+    }
+}
+
+// Restante do código permanece inalterado
 
     </script>
 </body>
