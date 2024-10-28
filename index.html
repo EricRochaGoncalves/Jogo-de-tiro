@@ -9,57 +9,27 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            overflow: hidden;
         }
-
         body {
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             height: 100vh;
-            width: 100vw;
+            width: 100vw; /* Define a largura para 100% */
             background-color: #87CEEB;
             font-family: 'Press Start 2P', cursive;
         }
-
         canvas {
             background-color: black;
         }
-
         .controls {
             display: flex;
             justify-content: center;
             margin-top: 10px;
         }
-
-        .message {
-            position: absolute;
-            color: white;
-            font-size: 20px;
-            pointer-events: none;
-        }
-
-        #xpCounter {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: white;
-            font-size: 24px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        #creatorMessage {
-            position: absolute;
-            bottom: 20px;
-            color: white;
-            font-size: 16px;
-            pointer-events: none;
-        }
-
-        .button, #startButton, #restartButton {
+        .button {
             width: 70px;
             height: 70px;
             margin: 0 15px;
@@ -70,71 +40,54 @@
             cursor: pointer;
             font-size: 24px;
             transition: background-color 0.3s;
-            font-family: 'Press Start 2P', cursive;
         }
-
-        #menu {
-            position: absolute;
-            top: 60px; /* Ajuste a posição conforme necessário */
-            right: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
+        .button:hover {
+            background-color: #218838;
         }
-
-        #menu a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        .button:hover, #startButton:hover, #restartButton:hover {
-            background-color: #218838; /* Cor ao passar o mouse */
-        }
-
         #startButton {
             width: 200px; /* Largura personalizada */
             height: 70px; /* Altura personalizada */
             background-color: #007bff; /* Cor de fundo */
+            color: white; /* Cor do texto */
+            border: none; /* Sem borda */
+            border-radius: 10px; /* Bordas arredondadas */
+            font-size: 24px; /* Tamanho da fonte */
+            cursor: pointer; /* Cursor em forma de ponteiro */
+            transition: background-color 0.3s; /* Efeito de transição */
         }
-
         #startButton:hover {
             background-color: #0056b3; /* Cor do botão ao passar o mouse */
         }
-
         #restartButton {
             display: none; /* Inicialmente oculto */
         }
-
-        .hamburger {
-            font-size: 30px; /* Aumenta o tamanho do ícone do menu */
-            cursor: pointer;
-            color: white;
+        .message {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            color: white;
+            font-size: 20px;
+            pointer-events: none;
         }
-
-        @media (max-width: 600px) {
-            #gameCanvas {
-                max-width: 100%; /* Permite que o canvas ocupe toda a largura em telas pequenas */
-                max-height: 100%; /* Permite que o canvas ocupe toda a altura em telas pequenas */
-            }
-
-            #xpCounter, #message, #startButton, #restartButton {
-                font-size: 4vw; /* Aumenta o tamanho da fonte em telas pequenas */
-            }
+        #xpCounter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 24px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        #creatorMessage {
+            position: absolute;
+            bottom: 20px;
+            color: white;
+            font-size: 16px;
+            pointer-events: none;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="hamburger" onclick="toggleMenu()">
-        &#9776; <!-- Ícone do menu hamburger -->
-    </div>
-    <div id="menu" style="display: none;">
-        <a href="https://portif-lio-ericgoncalves.onrender.com/" target="_blank">Meu Portfólio</a>
-    </div>
 
     <div id="xpCounter">XP: 0</div>
     <button id="startButton" onclick="startGame()">Começar Jogo</button>
@@ -146,6 +99,7 @@
         <button class="button" onclick="moveRight()">→</button>
         <button class="button" onclick="shoot()">Atirar</button>
     </div>
+
     <div id="message" class="message"></div>
     
     <div id="creatorMessage">
@@ -158,35 +112,12 @@
         const xpCounter = document.getElementById('xpCounter');
         let player, bullets, enemies, gameInterval, playerHits, xp;
 
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-
         function startGame() {
-    document.getElementById('startButton').style.display = 'none';
-    initializeGame();
-    gameInterval = setInterval(gameLoop, 1000 / 60);
-    spawnEnemy(5); // Alterado para criar 5 inimigos de uma vez
-}
-
-function spawnEnemy(count) {
-    for (let i = 0; i < count; i++) {
-        const enemy = {
-            x: Math.random() * (canvas.width - 40),
-            y: Math.random() * -100, // Posicionar os inimigos um pouco acima da tela
-            width: 40,
-            height: 40,
-            speed: Math.random() * 1 + 0.5,
-            color: 'red',
-            hitCount: 0,
-            isHit: false // Nova propriedade para verificar se o inimigo foi atingido
-        };
-        enemies.push(enemy);
-    }
-}
-
-// Continue com o resto do seu código...
+            document.getElementById('startButton').style.display = 'none';
+            initializeGame();
+            gameInterval = setInterval(gameLoop, 1000 / 60);
+            spawnEnemy();
+        }
 
         function restartGame() {
             playerHits = 0;
@@ -223,10 +154,8 @@ function spawnEnemy(count) {
 
         function drawEnemies() {
             enemies.forEach(enemy => {
-                ctx.fillStyle = enemy.isHit ? 'yellow' : enemy.color; // Mudança de cor se atingido
-                const drawWidth = enemy.isHit ? enemy.width * 1.5 : enemy.width; // Alterar largura se atingido
-                const drawHeight = enemy.isHit ? enemy.height / 2 : enemy.height; // Alterar altura se atingido
-                ctx.fillRect(enemy.x, enemy.y, drawWidth, drawHeight); // Desenha o inimigo
+                ctx.fillStyle = enemy.color;
+                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
             });
         }
 
@@ -238,10 +167,10 @@ function spawnEnemy(count) {
                 height: 40,
                 speed: Math.random() * 1 + 0.5,
                 color: 'red',
-                hitCount: 0,
-                isHit: false // Nova propriedade para verificar se o inimigo foi atingido
+                hitCount: 0
             };
             enemies.push(enemy);
+            setTimeout(spawnEnemy, 1000);
         }
 
         function updateEnemies() {
@@ -252,34 +181,22 @@ function spawnEnemy(count) {
         }
 
         function shoot() {
-            const bulletCount = 3;
-            const bulletSpread = 15; // Ângulo de espalhamento em graus
-
-            for (let i = -1; i <= 1; i++) {
-                const bullet = {
-                    x: player.x + player.width / 2 - 2.5,
-                    y: player.y,
-                    width: 5,
-                    height: 10,
-                    speed: 5,
-                    angle: i * bulletSpread // Calcular ângulo em graus
-                };
-                bullets.push(bullet);
-            }
+            const bullet = {
+                x: player.x + player.width / 2 - 2.5,
+                y: player.y,
+                width: 5,
+                height: 10,
+                speed: 5
+            };
+            bullets.push(bullet);
         }
 
         function updateBullets() {
             ctx.fillStyle = 'yellow';
             bullets.forEach(bullet => {
-                bullet.y -= bullet.speed; // Move a bala para cima
-                bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Aplica o espalhamento
-
-                // Desenhar a bala como um círculo
-                ctx.beginPath();
-                ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width / 2, 0, Math.PI * 2);
-                ctx.fill();
+                bullet.y -= bullet.speed;
+                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
             });
-            // Remove as balas que saem da tela
             bullets = bullets.filter(bullet => bullet.y > 0);
         }
 
@@ -291,15 +208,12 @@ function spawnEnemy(count) {
                         bullet.y < enemy.y + enemy.height &&
                         bullet.y + bullet.height > enemy.y) {
                         enemy.hitCount++;
-                        enemy.isHit = true; // Marca o inimigo como atingido
-
                         if (enemy.hitCount <= 3) {
                             enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
                         } else {
                             showXP();
                             bullets.splice(bulletIndex, 1);
                             enemies.splice(enemyIndex, 1);
-                            return; // Break out of the inner loop
                         }
                     }
                 });
@@ -323,40 +237,60 @@ function spawnEnemy(count) {
             const originalColor = player.color;
             let flashes = 0;
             const flashInterval = setInterval(() => {
-                player.color = (flashes % 2 === 0) ? 'red' : originalColor;
+                player.color = (flashes % 2 === 0) ? 'yellow' : originalColor;
                 flashes++;
-                if (flashes >= 6) {
+                if (flashes > 5) {
                     clearInterval(flashInterval);
                     player.color = originalColor;
                 }
-            }, 200);
+            }, 250);
+        }
+
+        function showXP() {
+            xp += 5; 
+            updateXPDisplay();
+            document.getElementById('message').innerText = "+5 XP";
+            setTimeout(() => {
+                document.getElementById('message').innerText = "";
+            }, 1000);
+        }
+
+        function updateXPDisplay() {
+            xpCounter.innerText = "XP: " + xp;
         }
 
         function gameOver() {
             clearInterval(gameInterval);
-            document.getElementById('message').innerText = 'Game Over! Você foi atingido!';
+            document.getElementById('message').innerText = "Game Over!";
             document.getElementById('restartButton').style.display = 'block';
+            player.color = 'red'; // Altera a cor do jogador em caso de game over
+            shakePlayer(); // Chama a animação de "shake"
         }
 
-        function showXP() {
-            xp++;
-            updateXPDisplay();
-        }
-
-        function updateXPDisplay() {
-            xpCounter.innerText = `XP: ${xp}`;
+        function shakePlayer() {
+            const originalX = player.x;
+            let shakes = 0;
+            const shakeInterval = setInterval(() => {
+                player.x += (shakes % 2 === 0 ? 10 : -10);
+                shakes++;
+               if (shakes > 10) {
+                    clearInterval(shakeInterval);
+                    player.x = originalX; // Restaura a posição original
+                }
+            }, 100);
         }
 
         function moveLeft() {
-            if (player.x > 0) {
-                player.x -= 20; // Move o jogador para a esquerda
-            }
+            if (player.x > 0) player.x -= 20;
         }
 
         function moveRight() {
-            if (player.x < canvas.width - player.width) {
-                player.x += 20; // Move o jogador para a direita
-            }
+            if (player.x < canvas.width - player.width) player.x += 20;
+        }
+
+        function toggleMenu() {
+            const isVisible = menuContent.style.display === 'block';
+            menuContent.style.display = isVisible ? 'none' : 'block';
         }
     </script>
 </body>
