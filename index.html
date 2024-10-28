@@ -161,6 +161,14 @@ canvas {
     right: 10px;
 }
 
+.heart {
+    width: 30px; /* Tamanho do coração */
+    height: 30px; /* Tamanho do coração */
+    background-color: red; /* Cor dos corações */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Forma de coração */
+    display: inline-block;
+    margin: 0 5px; /* Espaçamento entre os corações */
+}
 
 #restartButton {
     display: none; /* Inicialmente oculto */
@@ -190,12 +198,12 @@ canvas {
     <button id="startButton" onclick="startGame()">Começar Jogo</button>
     <button id="restartButton" onclick="restartGame()">Reiniciar Jogo</button>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+<div id="heartsContainer"></div>
     
     <div class="controls">
         <button class="button" onclick="moveLeft()">←</button>
         <button class="button" onclick="moveRight()">→</button>
         <button class="button" onclick="shoot()">Atirar</button>
-        <button class="button" onclick="shootSpiral()">Atirar em Espiral</button>
     </div>
 
     <div id="message" class="message"></div>
@@ -213,30 +221,11 @@ canvas {
 </div>
 
     <script>
-
-// Variáveis do jogo e inicialização do canvas
-const canvas = document.getElementById('canvas');
+        const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-let gameInterval;
-let player, bullets, enemies;
-let playerHits = 0;
-let xp = 0;
-let hearts = 5;
+const xpCounter = document.getElementById('xpCounter');
+let player, bullets, enemies, gameInterval, playerHits, xp;
 
-// Função para inicializar o jogo
-function initializeGame() {
-    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
-    bullets = [];
-    enemies = [];
-    playerHits = 0;
-    xp = 0;
-    hearts = 5;
-    updateHeartsDisplay();
-    updateXPDisplay();
-    document.getElementById('message').innerText = '';
-}
-
-// Função para iniciar o jogo
 function startGame() {
     document.getElementById('startButton').style.display = 'none';
     initializeGame();
@@ -244,13 +233,9 @@ function startGame() {
     spawnEnemy();
 }
 
-// Função para reiniciar o jogo
 function restartGame() {
-    clearInterval(gameInterval);
     playerHits = 0;
     xp = 0;
-    hearts = 5;
-    updateHeartsDisplay();
     initializeGame();
     updateXPDisplay();
     document.getElementById('restartButton').style.display = 'none';
@@ -258,7 +243,15 @@ function restartGame() {
     spawnEnemy();
 }
 
-// Função principal do jogo
+function initializeGame() {
+    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
+    bullets = [];
+    enemies = [];
+    playerHits = 0;
+    xp = 0;
+    document.getElementById('message').innerText = '';
+}
+
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawPlayer();
@@ -268,29 +261,11 @@ function gameLoop() {
     drawEnemies();
 }
 
-// Função para desenhar o jogador
 function drawPlayer() {
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.width, player.height);
 }
 
-// Função para atualizar e desenhar projéteis (bullets)
-function updateBullets() {
-    bullets.forEach((bullet, index) => {
-        bullet.y -= bullet.speed;
-        if (bullet.y < 0) bullets.splice(index, 1); // Remove o projétil se sair da tela
-    });
-}
-
-// Função para atualizar a posição dos inimigos
-function updateEnemies() {
-    enemies.forEach((enemy, index) => {
-        enemy.y += enemy.speed;
-        if (enemy.y > canvas.height) enemies.splice(index, 1); // Remove o inimigo se sair da tela
-    });
-}
-
-// Função para desenhar os inimigos
 function drawEnemies() {
     enemies.forEach(enemy => {
         ctx.fillStyle = enemy.color;
@@ -298,17 +273,72 @@ function drawEnemies() {
     });
 }
 
-// Função para verificar colisões entre jogador e inimigos
+function spawnEnemy() {
+    const enemy = {
+        x: Math.random() * (canvas.width - 40),
+        y: 0,
+        width: 40,
+        height: 40,
+        speed: Math.random() * 1 + 0.5,
+        color: 'white',
+        hitCount: 0
+    };
+    enemies.push(enemy);
+    setTimeout(spawnEnemy, 1000);
+}
+
+function updateEnemies() {
+    enemies.forEach(enemy => {
+        enemy.y += enemy.speed;
+    });
+    enemies = enemies.filter(enemy => enemy.y < canvas.height);
+}
+
+function shoot() {
+    const bullet = {
+        x: player.x + player.width / 2 - 2.5,
+        y: player.y,
+        width: 5,
+        height: 10,
+        speed: 5
+    };
+    bullets.push(bullet);
+}
+
+function updateBullets() {
+    ctx.fillStyle = 'yellow';
+    bullets.forEach(bullet => {
+        bullet.y -= bullet.speed;
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+    bullets = bullets.filter(bullet => bullet.y > 0);
+}
+
 function checkCollisions() {
-    enemies.forEach((enemy, index) => {
+    bullets.forEach((bullet, bulletIndex) => {
+        enemies.forEach((enemy, enemyIndex) => {
+            if (bullet.x < enemy.x + enemy.width &&
+                bullet.x + bullet.width > enemy.x &&
+                bullet.y < enemy.y + enemy.height &&
+                bullet.y + bullet.height > enemy.y) {
+                enemy.hitCount++;
+                if (enemy.hitCount <= 3) {
+                    enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
+                } else {
+                    showXP();
+                    bullets.splice(bulletIndex, 1);
+                    enemies.splice(enemyIndex, 1);
+                }
+            }
+        });
+    });
+
+    enemies.forEach(enemy => {
         if (enemy.y + enemy.height >= player.y && 
             enemy.x < player.x + player.width &&
             enemy.x + enemy.width > player.x) {
             playerHits++;
-            hearts--;
-            updateHeartsDisplay();
-            enemies.splice(index, 1); // Remove o inimigo após colisão
-            if (hearts <= 0) {
+            if (playerHits >= 3) {
                 gameOver();
             } else {
                 flashPlayer();
@@ -317,12 +347,19 @@ function checkCollisions() {
     });
 }
 
-// Função para atualizar a exibição dos corações
-function updateHeartsDisplay() {
-    document.getElementById('heartsCounter').innerText = "Corações: " + hearts;
+function flashPlayer() {
+    const originalColor = player.color;
+    let flashes = 0;
+    const flashInterval = setInterval(() => {
+        player.color = (flashes % 2 === 0) ? 'yellow' : originalColor;
+        flashes++;
+        if (flashes > 5) {
+            clearInterval(flashInterval);
+            player.color = originalColor;
+        }
+    }, 250);
 }
 
-// Função para exibir e atualizar a XP
 function showXP() {
     xp += 5; 
     updateXPDisplay();
@@ -332,62 +369,100 @@ function showXP() {
     }, 1000);
 }
 
-// Função para atualizar a exibição de XP
 function updateXPDisplay() {
-    document.getElementById('xpCounter').innerText = "XP: " + xp;
+    xpCounter.innerText = "XP: " + xp;
 }
 
-// Função de game over
 function gameOver() {
     clearInterval(gameInterval);
     document.getElementById('message').innerText = "Game Over!";
     document.getElementById('restartButton').style.display = 'block';
-    player.color = 'red';
-    shakePlayer();
-}
-
-// Função para spawnar inimigos
-function spawnEnemy() {
-    const enemy = {
-        x: Math.random() * (canvas.width - 50),
-        y: 0,
-        width: 50,
-        height: 50,
-        color: 'red',
-        speed: 2 + Math.random() * 2
-    };
-    enemies.push(enemy);
-}
-
-// Efeitos visuais para o jogador
-function flashPlayer() {
-    player.color = 'yellow';
-    setTimeout(() => { player.color = 'blue'; }, 100);
+    player.color = 'red'; // Altera a cor do jogador em caso de game over
+    shakePlayer(); // Chama a animação de "shake"
 }
 
 function shakePlayer() {
-    // Efeito de tremer
-    let shakeCount = 0;
+    const originalX = player.x;
+    let shakes = 0;
     const shakeInterval = setInterval(() => {
-        if (shakeCount < 10) {
-            player.x += (shakeCount % 2 === 0 ? -5 : 5);
-            shakeCount++;
-        } else {
+        player.x += (shakes % 2 === 0 ? 10 : -10);
+        shakes++;
+        if (shakes > 10) {
             clearInterval(shakeInterval);
-            player.x = canvas.width / 2 - 25; // Volta o player à posição inicial
+            player.x = originalX; // Restaura a posição original
         }
-    }, 50);
+    }, 100);
 }
 
-// Função para alternar o menu
+function moveLeft() {
+    player.x = Math.max(0, player.x - 20);
+}
+
+function moveRight() {
+    player.x = Math.min(canvas.width - player.width, player.x + 20);
+}
+
 function toggleMenu() {
     const menuContent = document.getElementById('menuContent');
-    if (menuContent) {
-        menuContent.style.display = (menuContent.style.display === 'block') ? 'none' : 'block';
+    menuContent.style.display = (menuContent.style.display === 'block') ? 'none' : 'block';
+}
+let hearts; // Adicione esta linha para armazenar os corações
+
+function initializeGame() {
+    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
+    bullets = [];
+    enemies = [];
+    playerHits = 0;
+    xp = 0;
+    hearts = 5; // Inicializa o número de corações
+    updateHeartsDisplay(); // Chama a função para atualizar os corações
+    document.getElementById('message').innerText = '';
+}
+
+function checkCollisions() {
+    bullets.forEach((bullet, bulletIndex) => {
+        enemies.forEach((enemy, enemyIndex) => {
+            if (bullet.x < enemy.x + enemy.width &&
+                bullet.x + bullet.width > enemy.x &&
+                bullet.y < enemy.y + enemy.height &&
+                bullet.y + bullet.height > enemy.y) {
+                enemy.hitCount++;
+                if (enemy.hitCount <= 3) {
+                    enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
+                } else {
+                    showXP();
+                    bullets.splice(bulletIndex, 1);
+                    enemies.splice(enemyIndex, 1);
+                }
+            }
+        });
+    });
+
+    enemies.forEach(enemy => {
+        if (enemy.y + enemy.height >= player.y && 
+            enemy.x < player.x + player.width &&
+            enemy.x + enemy.width > player.x) {
+            playerHits++;
+            hearts--; // Diminui o número de corações
+            updateHeartsDisplay(); // Atualiza a exibição dos corações
+            if (hearts <= 0) {
+                gameOver();
+            } else {
+                flashPlayer();
+            }
+        }
+    });
+}
+
+function updateHeartsDisplay() {
+    const heartsContainer = document.getElementById('heartsContainer');
+    heartsContainer.innerHTML = ''; // Limpa os corações existentes
+    for (let i = 0; i < hearts; i++) {
+        heartsContainer.innerHTML += '<div class="heart"></div>'; // Adiciona corações
     }
 }
-    
 
+// Restante do código permanece inalterado
 
     </script>
 </body>
