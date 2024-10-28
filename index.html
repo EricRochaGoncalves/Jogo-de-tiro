@@ -214,14 +214,10 @@ function drawPlayer() {
 
 function drawEnemies() {
     enemies.forEach(enemy => {
-        if (enemy.isHit) {
-            // Desenhar como retângulo (forma alterada)
-            ctx.fillStyle = 'yellow'; // Cor para indicar que foi atingido
-            ctx.fillRect(enemy.x, enemy.y, enemy.width * 1.5, enemy.height / 2); // Muda o tamanho do retângulo
-        } else {
-            ctx.fillStyle = enemy.color;
-            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-        }
+        ctx.fillStyle = enemy.isHit ? 'yellow' : enemy.color; // Mudança de cor se atingido
+        const drawWidth = enemy.isHit ? enemy.width * 1.5 : enemy.width; // Alterar largura se atingido
+        const drawHeight = enemy.isHit ? enemy.height / 2 : enemy.height; // Alterar altura se atingido
+        ctx.fillRect(enemy.x, enemy.y, drawWidth, drawHeight); // Desenha o inimigo
     });
 }
 
@@ -247,9 +243,8 @@ function updateEnemies() {
 }
 
 function shoot() {
-    // Fire 3 bullets in different directions
     const bulletCount = 3;
-    const bulletSpread = 15; // Angle spread in degrees
+    const bulletSpread = 15; // Ângulo de espalhamento em graus
 
     for (let i = -1; i <= 1; i++) {
         const bullet = {
@@ -258,7 +253,7 @@ function shoot() {
             width: 5,
             height: 10,
             speed: 5,
-            angle: i * bulletSpread // Calculate angle in degrees
+            angle: i * bulletSpread // Calcular ângulo em graus
         };
         bullets.push(bullet);
     }
@@ -267,15 +262,15 @@ function shoot() {
 function updateBullets() {
     ctx.fillStyle = 'yellow';
     bullets.forEach(bullet => {
-        bullet.y -= bullet.speed; // Move bullet up
-        bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Apply spread
-        
+        bullet.y -= bullet.speed; // Move a bala para cima
+        bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Aplica o espalhamento
+
         // Desenhar a bala como um círculo
         ctx.beginPath();
         ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width / 2, 0, Math.PI * 2);
         ctx.fill();
     });
-    // Remove bullets that go off-screen
+    // Remove as balas que saem da tela
     bullets = bullets.filter(bullet => bullet.y > 0);
 }
 
@@ -292,7 +287,6 @@ function checkCollisions() {
                 if (enemy.hitCount <= 3) {
                     enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
                 } else {
-                    createSmoke(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2); // Adiciona fumaça
                     showXP();
                     bullets.splice(bulletIndex, 1);
                     enemies.splice(enemyIndex, 1);
@@ -346,13 +340,13 @@ function updateXPDisplay() {
 
 function moveLeft() {
     if (player.x > 0) {
-        player.x -= 20; // Move player left
+        player.x -= 20; // Move o jogador para a esquerda
     }
 }
 
 function moveRight() {
     if (player.x < canvas.width - player.width) {
-        player.x += 20; // Move player right
+        player.x += 20; // Move o jogador para a direita
     }
 }
     </script>
