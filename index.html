@@ -183,24 +183,35 @@
         }
 
         function shoot() {
-            const bullet = {
-                x: player.x + player.width / 2 - 2.5,
-                y: player.y,
-                width: 5,
-                height: 10,
-                speed: 5
-            };
-            bullets.push(bullet);
-        }
+    // Adiciona três balas para criar um efeito de dispersão
+    const bulletConfigs = [
+        { offsetX: -5, angle: -0.1 }, // Bala esquerda
+        { offsetX: 0, angle: 0 }, // Bala central
+        { offsetX: 5, angle: 0.1 } // Bala direita
+    ];
 
-        function updateBullets() {
-            ctx.fillStyle = 'yellow';
-            bullets.forEach(bullet => {
-                bullet.y -= bullet.speed;
-                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-            });
-            bullets = bullets.filter(bullet => bullet.y > 0);
-        }
+    bulletConfigs.forEach(config => {
+        const bullet = {
+            x: player.x + player.width / 2 - 2.5 + config.offsetX,
+            y: player.y,
+            width: 5,
+            height: 10,
+            speed: 5,
+            angle: config.angle
+        };
+        bullets.push(bullet);
+    });
+}
+
+function updateBullets() {
+    ctx.fillStyle = 'yellow';
+    bullets.forEach(bullet => {
+        bullet.x += Math.sin(bullet.angle) * bullet.speed; // Movimenta a bala com base no ângulo
+        bullet.y -= Math.cos(bullet.angle) * bullet.speed; // Movimenta a bala para cima
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+    bullets = bullets.filter(bullet => bullet.y > 0 && bullet.x > 0 && bullet.x < canvas.width);
+}
 
         function checkCollisions() {
             bullets.forEach((bullet, bulletIndex) => {
