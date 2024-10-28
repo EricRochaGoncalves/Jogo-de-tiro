@@ -164,11 +164,29 @@
         }
 
         function startGame() {
-            document.getElementById('startButton').style.display = 'none';
-            initializeGame();
-            gameInterval = setInterval(gameLoop, 1000 / 60);
-            spawnEnemy();
-        }
+    document.getElementById('startButton').style.display = 'none';
+    initializeGame();
+    gameInterval = setInterval(gameLoop, 1000 / 60);
+    spawnEnemy(5); // Alterado para criar 5 inimigos de uma vez
+}
+
+function spawnEnemy(count) {
+    for (let i = 0; i < count; i++) {
+        const enemy = {
+            x: Math.random() * (canvas.width - 40),
+            y: Math.random() * -100, // Posicionar os inimigos um pouco acima da tela
+            width: 40,
+            height: 40,
+            speed: Math.random() * 1 + 0.5,
+            color: 'red',
+            hitCount: 0,
+            isHit: false // Nova propriedade para verificar se o inimigo foi atingido
+        };
+        enemies.push(enemy);
+    }
+}
+
+// Continue com o resto do seu código...
 
         function restartGame() {
             playerHits = 0;
