@@ -151,8 +151,7 @@ canvas {
     </div>
 
     <script>
-        
-const canvas = document.getElementById('gameCanvas');
+        const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const xpCounter = document.getElementById('xpCounter');
 let player, bullets, enemies, gameInterval, playerHits, xp;
@@ -231,47 +230,32 @@ function updateEnemies() {
 }
 
 function shoot() {
-    const bullet = {
-        x: player.x + player.width / 2 - 2.5,
-        y: player.y,
-        width: 5,
-        height: 10,
-        speed: 5
-    };
-    bullets.push(bullet);
-}
+    // Dispara 3 balas em direções diferentes
+    const bulletCount = 3; // Número de balas
+    const bulletSpread = 20; // Ângulo de dispersão
 
-function megaShot() {
-    for (let i = 0; i < 5; i++) {
-        shoot(); // Dispara 5 balas de uma vez
+    for (let i = -1; i <= 1; i++) {
+        const bullet = {
+            x: player.x + player.width / 2 - 2.5,
+            y: player.y,
+            width: 5,
+            height: 10,
+            speed: 5,
+            angle: i * bulletSpread // Define o ângulo de dispersão
+        };
+        bullets.push(bullet);
     }
-
-    // Cria uma mega-bala
-    const megaBullet = {
-        x: player.x + player.width / 2 - 25,
-        y: player.y,
-        radius: 25,
-        speed: 3,
-        color: 'orange',
-    };
-    bullets.push(megaBullet);
 }
 
 function updateBullets() {
+    ctx.fillStyle = 'yellow';
     bullets.forEach(bullet => {
-        bullet.y -= bullet.speed;
+        bullet.y -= bullet.speed; // Move a bala para cima
+        bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Aplica a dispersão
 
-        // Verifica se é uma mega-bala
-        if (bullet.radius) {
-            ctx.fillStyle = bullet.color;
-            ctx.beginPath();
-            ctx.arc(bullet.x + bullet.radius, bullet.y + bullet.radius, bullet.radius, 0, Math.PI * 2);
-            ctx.fill();
-        } else {
-            ctx.fillStyle = 'yellow';
-            ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-        }
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     });
+    // Remove balas que saem da tela
     bullets = bullets.filter(bullet => bullet.y > 0);
 }
 
@@ -316,7 +300,7 @@ function flashPlayer() {
         flashes++;
         if (flashes >= 6) {
             clearInterval(flashInterval);
-            player.color = originalColor; // Restaura a cor original
+            player.color = originalColor;
         }
     }, 200);
 }
@@ -347,6 +331,7 @@ function moveRight() {
         player.x += 20; // Move o jogador para a direita
     }
 }
+
     </script>
 </body>
 </html>
