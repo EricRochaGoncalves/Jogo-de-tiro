@@ -327,6 +327,16 @@ function createFireAnimation(bullet) {
         fireAnimation.remove();
     }, 500);
 }
+function updateBullets() {
+    bullets.forEach(bullet => {
+        bullet.y -= bullet.speed; // Move a bala para cima
+
+        // Desenha a bala com base em sua largura e altura
+        ctx.fillStyle = bullet.color;
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+    bullets = bullets.filter(bullet => bullet.y > 0); // Remove balas que saem da tela
+}
     </script>
 </body>
 </html>
