@@ -11,6 +11,13 @@
     box-sizing: border-box;
 }
 
+/* Impedir scroll em dispositivos móveis */
+@media screen and (max-width: 768px) {
+    body {
+        overflow: hidden; /* Impede o scroll da página em dispositivos móveis */
+    }
+}
+
 body {
     overflow: hidden;
     display: flex;
@@ -140,6 +147,12 @@ canvas {
 
 #menuContent a:hover {
     color: #ffcc00; /* Cor amarela ao passar o mouse */
+}
+
+/* Estilo dos inimigos */
+.enemy {
+    background-color: #ffffff; /* Cor branca para os inimigos */
+    border-radius: 10px; /* Bordas levemente arredondadas */
 }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
