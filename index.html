@@ -214,8 +214,14 @@ function drawPlayer() {
 
 function drawEnemies() {
     enemies.forEach(enemy => {
-        ctx.fillStyle = enemy.color;
-        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        if (enemy.isHit) {
+            // Desenhar como retângulo (forma alterada)
+            ctx.fillStyle = 'yellow'; // Cor para indicar que foi atingido
+            ctx.fillRect(enemy.x, enemy.y, enemy.width * 1.5, enemy.height / 2); // Muda o tamanho do retângulo
+        } else {
+            ctx.fillStyle = enemy.color;
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        }
     });
 }
 
