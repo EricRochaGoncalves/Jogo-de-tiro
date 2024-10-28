@@ -145,79 +145,72 @@
 
     <script>
         const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const xpCounter = document.getElementById('xpCounter');
-        let player, bullets, enemies, gameInterval, playerHits, xp;
+const ctx = canvas.getContext('2d');
+const xpCounter = document.getElementById('xpCounter');
+let player, bullets, enemies, gameInterval, playerHits, xp;
 
-        function startGame() {
-            document.getElementById('startButton').style.display = 'none';
-            initializeGame();
-            gameInterval = setInterval(gameLoop, 1000 / 60);
-            spawnEnemy();
-        }
+function startGame() {
+    document.getElementById('startButton').style.display = 'none';
+    initializeGame();
+    gameInterval = setInterval(gameLoop, 1000 / 60);
+    spawnEnemy();
+}
 
-        function restartGame() {
-            playerHits = 0;
-            xp = 0;
-            initializeGame();
-            updateXPDisplay();
-            document.getElementById('restartButton').style.display = 'none';
-            gameInterval = setInterval(gameLoop, 1000 / 60);
-            spawnEnemy();
-        }
+function restartGame() {
+    playerHits = 0;
+    xp = 0;
+    initializeGame();
+    updateXPDisplay();
+    document.getElementById('restartButton').style.display = 'none';
+    gameInterval = setInterval(gameLoop, 1000 / 60);
+    spawnEnemy();
+}
 
-        function initializeGame() {
-            player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
-            bullets = [];
-            enemies = [];
-            playerHits = 0;
-            xp = 0;
-            document.getElementById('message').innerText = '';
-        }
+function initializeGame() {
+    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
+    bullets = [];
+    enemies = [];
+    playerHits = 0;
+    xp = 0;
+    document.getElementById('message').innerText = '';
+}
 
-        function gameLoop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlayer();
-            updateBullets();
-            updateEnemies();
-            checkCollisions();
-            drawEnemies();
-        }
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlayer();
+    updateBullets();
+    updateEnemies();
+    checkCollisions();
+    drawEnemies();
+}
 
-        function drawPlayer() {
-            ctx.fillStyle = player.color;
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-        }
+function drawPlayer() {
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+}
 
-        function drawEnemies() {
-            enemies.forEach(enemy => {
-                ctx.fillStyle = enemy.color;
-                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-            });
-        }
+function drawEnemies() {
+    enemies.forEach(enemy => {
+        ctx.fillStyle = enemy.color;
+        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+    });
+}
 
-        function spawnEnemy() {
-            const enemy = {
-                x: Math.random() * (canvas.width - 40),
-                y: 0,
-                width: 40,
-                height: 40,
-                speed: Math.random() * 1 + 0.5,
-                color: 'red',
-                hitCount: 0
-            };
-            enemies.push(enemy);
-            setTimeout(spawnEnemy, 1000);
-        }
+function spawnEnemy() {
+    const enemy = {
+        x: Math.random() * (canvas.width - 40),
+        y: 0,
+        width: 40,
+        height: 40,
+        speed: Math.random() * 1 + 0.5,
+        color: 'red',
+        hitCount: 0
+    };
+    enemies.push(enemy);
+    setTimeout(spawnEnemy, 1000);
+}
 
-        function updateEnemies() {
-            enemies.forEach(enemy => {
-                enemy.y += enemy.speed;
-            });
-            enemies = enemies.filter(enemy => enemy.y < canvas.height);
-        }
-
-        function shoot() {
+function shoot() {
     const angles = [-0.1, 0, 0.1]; // Ângulos para dispersão das balas (em radianos)
     angles.forEach(angle => {
         const bullet = {
@@ -231,6 +224,7 @@
         bullets.push(bullet);
     });
 }
+
 function megaShoot() {
     const megaBullet = {
         x: player.x + player.width / 2 - 5,
@@ -242,125 +236,121 @@ function megaShoot() {
         isMega: true // Indica que é um mega-tiro
     };
     bullets.push(megaBullet);
-
-    // Lógica para disparar o mega-tiro
-    const shootInterval = setInterval(() => {
-        if (megaBullet.y > 0) {
-            megaBullet.y -= megaBullet.speed;
-            ctx.fillStyle = megaBullet.color;
-            ctx.fillRect(megaBullet.x, megaBullet.y, megaBullet.width, megaBullet.height);
-        } else {
-            clearInterval(shootInterval);
-        }
-    }, 1000 / 60); // 60 FPS
 }
 
-        function updateBullets() {
+function updateBullets() {
     ctx.fillStyle = 'yellow';
     bullets.forEach(bullet => {
-        bullet.y -= bullet.speed * Math.cos(bullet.angle);
-        bullet.x += bullet.speed * Math.sin(bullet.angle);
-        
-        ctx.beginPath();
-        ctx.roundRect(bullet.x, bullet.y, bullet.width, bullet.height, 5); // Adiciona borda arredondada
-        ctx.fill();
-        ctx.closePath();
+        if (bullet.isMega) {
+            bullet.y -= bullet.speed; // Atualiza a posição do mega-tiro
+            ctx.fillStyle = bullet.color;
+            ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        } else {
+            bullet.y -= bullet.speed * Math.cos(bullet.angle);
+            bullet.x += bullet.speed * Math.sin(bullet.angle);
+            
+            ctx.beginPath();
+            ctx.roundRect(bullet.x, bullet.y, bullet.width, bullet.height, 5); // Adiciona borda arredondada
+            ctx.fill();
+            ctx.closePath();
+        }
     });
-    bullets = bullets.filter(bullet => bullet.y > 0);
+    bullets = bullets.filter(bullet => bullet.y > 0); // Remove balas que saíram da tela
 }
 
-        function checkCollisions() {
-            bullets.forEach((bullet, bulletIndex) => {
-                enemies.forEach((enemy, enemyIndex) => {
-                    if (bullet.x < enemy.x + enemy.width &&
-                        bullet.x + bullet.width > enemy.x &&
-                        bullet.y < enemy.y + enemy.height &&
-                        bullet.y + bullet.height > enemy.y) {
-                        enemy.hitCount++;
-                        if (enemy.hitCount <= 3) {
-                            enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
-                        } else {
-                            showXP();
-                            bullets.splice(bulletIndex, 1);
-                            enemies.splice(enemyIndex, 1);
-                        }
-                    }
-                });
-            });
-
-            enemies.forEach(enemy => {
-                if (enemy.y + enemy.height >= player.y && 
-                    enemy.x < player.x + player.width &&
-                    enemy.x + enemy.width > player.x) {
-                    playerHits++;
-                    if (playerHits >= 3) {
-                        gameOver();
-                    } else {
-                        flashPlayer();
-                    }
+function checkCollisions() {
+    bullets.forEach((bullet, bulletIndex) => {
+        enemies.forEach((enemy, enemyIndex) => {
+            if (bullet.x < enemy.x + enemy.width &&
+                bullet.x + bullet.width > enemy.x &&
+                bullet.y < enemy.y + enemy.height &&
+                bullet.y + bullet.height > enemy.y) {
+                enemy.hitCount++;
+                if (enemy.hitCount <= 3) {
+                    enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
+                } else {
+                    showXP();
+                    bullets.splice(bulletIndex, 1);
+                    enemies.splice(enemyIndex, 1);
                 }
-            });
-        }
+            }
+        });
+    });
 
-        function flashPlayer() {
-            const originalColor = player.color;
-            let flashes = 0;
-            const flashInterval = setInterval(() => {
-                player.color = (flashes % 2 === 0) ? 'yellow' : originalColor;
-                flashes++;
-                if (flashes > 5) {
-                    clearInterval(flashInterval);
-                    player.color = originalColor;
-                }
-            }, 250);
+    enemies.forEach(enemy => {
+        if (enemy.y + enemy.height >= player.y && 
+            enemy.x < player.x + player.width &&
+            enemy.x + enemy.width > player.x) {
+            playerHits++;
+            if (playerHits >= 3) {
+                gameOver();
+            } else {
+                flashPlayer();
+            }
         }
+    });
+}
 
-        function showXP() {
-            xp += 5; 
-            updateXPDisplay();
-            document.getElementById('message').innerText = "+5 XP";
-            setTimeout(() => {
-                document.getElementById('message').innerText = "";
-            }, 1000);
+function flashPlayer() {
+    const originalColor = player.color;
+    let flashes = 0;
+    const flashInterval = setInterval(() => {
+        player.color = (flashes % 2 === 0) ? 'yellow' : originalColor;
+        flashes++;
+        if (flashes > 5) {
+            clearInterval(flashInterval);
+            player.color = originalColor;
         }
+    }, 250);
+}
 
-        function updateXPDisplay() {
-            xpCounter.innerText = "XP: " + xp;
-        }
+function showXP() {
+    xp += 5; 
+    updateXPDisplay();
+    document.getElementById('message').innerText = "+5 XP";
+    setTimeout(() => {
+        document.getElementById('message').innerText = "";
+    }, 1000);
+}
 
-        function gameOver() {
-            clearInterval(gameInterval);
-            document.getElementById('message').innerText = "Game Over!";
-            document.getElementById('restartButton').style.display = 'block';
-            player.color = 'red'; // Altera a cor do jogador em caso de game over
-            shakePlayer(); // Chama a animação de "shake"
-        }
+function updateXPDisplay() {
+    xpCounter.innerText = "XP: " + xp;
+}
 
-        function shakePlayer() {
-            const originalX = player.x;
-            let shakes = 0;
-            const shakeInterval = setInterval(() => {
-                player.x += (shakes % 2 === 0 ? 10 : -10);
-                shakes++;
-               if (shakes > 10) {
-                    clearInterval(shakeInterval);
-                    player.x = originalX; // Restaura a posição original
-                }
-            }, 100);
-        }
+function gameOver() {
+    clearInterval(gameInterval);
+    document.getElementById('message').innerText = "Game Over!";
+    document.getElementById('restartButton').style.display = 'block';
+    player.color = 'red'; // Altera a cor do jogador em caso de game over
+    shakePlayer(); // Chama a animação de "shake"
+}
 
-        function moveLeft() {
-            if (player.x > 0) player.x -= 20;
+function shakePlayer() {
+    const originalX = player.x;
+    let shakes = 0;
+    const shakeInterval = setInterval(() => {
+        player.x += (shakes % 2 === 0 ? 10 : -10);
+        shakes++;
+        if (shakes > 10) {
+            clearInterval(shakeInterval);
+            player.x = originalX; // Restaura a posição original
         }
+    }, 100);
+}
 
-        function moveRight() {
-            if (player.x < canvas.width - player.width) player.x += 20;
-        }
+function moveLeft() {
+    if (player.x > 0) player.x -= 20;
+}
 
-        function toggleMenu() {
-            const isVisible = menuContent.style.display === 'block';
-            menuContent.style.display = isVisible ? 'none' : 'block';
-        }
+function moveRight() {
+    if (player.x < canvas.width - player.width) player.x += 20;
+}
+
+function toggleMenu() {
+    const menuContent = document.getElementById('menuContent'); // Certifique-se de ter o elemento de menu definido
+    const isVisible = menuContent.style.display === 'block';
+    menuContent.style.display = isVisible ? 'none' : 'block';
+}
     </script>
 </body>
 </html>
