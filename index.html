@@ -84,6 +84,32 @@
             font-size: 16px;
             pointer-events: none;
         }
+/* Ajustes para dispositivos móveis */
+@media screen and (max-width: 768px) {
+    canvas {
+        width: 90vw; /* Largura do canvas ajustada para 90% da largura da tela */
+        height: 60vh; /* Altura do canvas ajustada para 60% da altura da tela */
+    }
+    .button {
+        width: 50px; /* Largura dos botões ajustada */
+        height: 50px; /* Altura dos botões ajustada */
+        margin: 0 10px; /* Margem ajustada */
+        font-size: 18px; /* Tamanho da fonte dos botões ajustado */
+    }
+    #startButton, #restartButton {
+        width: 150px; /* Largura dos botões de início e reinício ajustada */
+        height: 50px; /* Altura dos botões de início e reinício ajustada */
+        font-size: 18px; /* Tamanho da fonte ajustado */
+    }
+    #xpCounter {
+        font-size: 18px; /* Tamanho da fonte do contador de XP ajustado */
+        padding: 3px 8px; /* Padding ajustado */
+    }
+    #creatorMessage {
+        font-size: 14px; /* Tamanho da fonte da mensagem do criador ajustado */
+        bottom: 10px; /* Posição da mensagem ajustada */
+    }
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
