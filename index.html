@@ -229,7 +229,23 @@ const ctx = canvas.getContext('2d');
 const xpCounter = document.getElementById('xpCounter');
 let player, bullets, enemies, gameInterval, playerHits, xp;
 let hearts; // Adicione esta linha para armazenar os corações
+function shootSpiral() {
+    const bulletCount = 12; // Número de tiros em espiral
+    const angleIncrement = (Math.PI * 2) / bulletCount; // Incremento do ângulo
 
+    for (let i = 0; i < bulletCount; i++) {
+        const angle = angleIncrement * i; // Calcula o ângulo
+        const bullet = {
+            x: player.x + player.width / 2 - 2.5,
+            y: player.y,
+            width: 5,
+            height: 10,
+            speed: 5,
+            angle: angle // Adiciona o ângulo para cada tiro
+        };
+        bullets.push(bullet);
+    }
+}
 function startGame() {
     document.getElementById('startButton').style.display = 'none';
     initializeGame();
