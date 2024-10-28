@@ -230,9 +230,9 @@ function updateEnemies() {
 }
 
 function shoot() {
-    // Dispara 3 balas em direções diferentes
-    const bulletCount = 3; // Número de balas
-    const bulletSpread = 20; // Ângulo de dispersão
+    // Fire 3 bullets in different directions
+    const bulletCount = 3;
+    const bulletSpread = 15; // Angle spread in degrees
 
     for (let i = -1; i <= 1; i++) {
         const bullet = {
@@ -241,7 +241,7 @@ function shoot() {
             width: 5,
             height: 10,
             speed: 5,
-            angle: i * bulletSpread // Define o ângulo de dispersão
+            angle: i * bulletSpread // Calculate angle in degrees
         };
         bullets.push(bullet);
     }
@@ -250,12 +250,12 @@ function shoot() {
 function updateBullets() {
     ctx.fillStyle = 'yellow';
     bullets.forEach(bullet => {
-        bullet.y -= bullet.speed; // Move a bala para cima
-        bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Aplica a dispersão
+        bullet.y -= bullet.speed; // Move bullet up
+        bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Apply spread
 
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     });
-    // Remove balas que saem da tela
+    // Remove bullets that go off-screen
     bullets = bullets.filter(bullet => bullet.y > 0);
 }
 
@@ -273,6 +273,7 @@ function checkCollisions() {
                     showXP();
                     bullets.splice(bulletIndex, 1);
                     enemies.splice(enemyIndex, 1);
+                    return; // Break out of the inner loop
                 }
             }
         });
@@ -322,16 +323,15 @@ function updateXPDisplay() {
 
 function moveLeft() {
     if (player.x > 0) {
-        player.x -= 20; // Move o jogador para a esquerda
+        player.x -= 20; // Move player left
     }
 }
 
 function moveRight() {
     if (player.x < canvas.width - player.width) {
-        player.x += 20; // Move o jogador para a direita
+        player.x += 20; // Move player right
     }
 }
-
     </script>
 </body>
 </html>
