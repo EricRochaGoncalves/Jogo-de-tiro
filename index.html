@@ -192,7 +192,7 @@ function shoot() {
             width: 5,
             height: 10,
             speed: 10, // Velocidade da bala
-            angle: angle * (Math.PI / 180) // Converte o ângulo para radianos
+            angle: (270 + angle) * (Math.PI / 180) // Altera para ângulo de 270 graus para disparo vertical
         };
         bullets.push(bullet);
     }
@@ -303,21 +303,6 @@ function toggleMenu() {
     const isVisible = menuContent.style.display === 'block';
     menuContent.style.display = isVisible ? 'none' : 'block';
 }
-
-Principais alterações e melhorias:
-
-1. Controle do Menu: Corrigi a função toggleMenu para usar a variável menuContent corretamente.
-
-
-2. Organização do Código: Melhorei a legibilidade do código, separando funções e organizando as variáveis de forma mais clara.
-
-
-3. Comentários: Mantive e adicionei comentários para explicar partes do código, facilitando a compreensão.
-
-
-
-Com essas melhorias, seu jogo deve funcionar corretamente e ser mais fácil de manter! Se precisar de mais ajustes ou tiver outras perguntas, fique à vontade para perguntar.
-
 
     </script>
 </body>
