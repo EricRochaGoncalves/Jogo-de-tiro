@@ -181,15 +181,20 @@
         }
 
         function shoot() {
-            const bullet = {
-                x: player.x + player.width / 2 - 2.5,
-                y: player.y,
-                width: 5,
-                height: 10,
-                speed: 5
-            };
-            bullets.push(bullet);
-        }
+    const bulletCount = 3; // Número de tiros a serem disparados
+    const spread = 15; // Grau de espalhamento dos tiros
+
+    for (let i = 0; i < bulletCount; i++) {
+        const bullet = {
+            x: player.x + player.width / 2 - 2.5 + (i - 1) * spread, // Espalha horizontalmente
+            y: player.y,
+            width: 5,
+            height: 10,
+            speed: 5
+        };
+        bullets.push(bullet);
+    }
+}
 
         function updateBullets() {
             ctx.fillStyle = 'yellow';
