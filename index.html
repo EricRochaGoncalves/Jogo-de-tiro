@@ -252,8 +252,11 @@ function updateBullets() {
     bullets.forEach(bullet => {
         bullet.y -= bullet.speed; // Move bullet up
         bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Apply spread
-
-        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        
+        // Desenhar a bala como um círculo
+        ctx.beginPath();
+        ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width / 2, 0, Math.PI * 2);
+        ctx.fill();
     });
     // Remove bullets that go off-screen
     bullets = bullets.filter(bullet => bullet.y > 0);
