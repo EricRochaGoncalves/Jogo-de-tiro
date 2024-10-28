@@ -11,6 +11,12 @@
             box-sizing: border-box;
             overflow: hidden;
         }
+        /* Impedir scroll em dispositivos móveis */
+@media screen and (max-width: 768px) { /* Ajuste a largura conforme necessário */
+    body {
+        overflow: hidden; /* Impede o scroll da página em dispositivos móveis */
+    }
+}
         body {
             overflow: hidden;
             display: flex;
