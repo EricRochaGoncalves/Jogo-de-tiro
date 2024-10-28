@@ -160,18 +160,23 @@
         }
 
         function spawnEnemy() {
-            const enemy = {
-                x: Math.random() * (canvas.width - 40),
-                y: 0,
-                width: 40,
-                height: 40,
-                speed: Math.random() * 1 + 0.5,
-                color: 'red',
-                hitCount: 0
-            };
-            enemies.push(enemy);
-            setTimeout(spawnEnemy, 1000);
-        }
+    const numberOfEnemies = 3; // Define quantos inimigos serão gerados por vez
+
+    for (let i = 0; i < numberOfEnemies; i++) {
+        const enemy = {
+            x: Math.random() * (canvas.width - 40),
+            y: 0,
+            width: 40,
+            height: 40,
+            speed: Math.random() * 1 + 0.5,
+            color: 'red',
+            hitCount: 0
+        };
+        enemies.push(enemy);
+    }
+
+    setTimeout(spawnEnemy, 1000); // Mantém o intervalo entre a geração de inimigos
+}
 
         function updateEnemies() {
             enemies.forEach(enemy => {
