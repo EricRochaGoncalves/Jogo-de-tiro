@@ -123,6 +123,16 @@ canvas {
     position: relative;
     box-shadow: 0 0 10px orange; /* Efeito de brilho */
 }
+@media (max-width: 600px) {
+    #gameCanvas {
+        max-width: 100%; /* Permite que o canvas ocupe toda a largura em telas pequenas */
+        max-height: 100%; /* Permite que o canvas ocupe toda a altura em telas pequenas */
+    }
+
+    #xpCounter, #message, #startButton, #restartButton {
+        font-size: 4vw; /* Aumenta o tamanho da fonte em telas pequenas */
+    }
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
