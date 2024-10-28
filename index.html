@@ -110,6 +110,16 @@
         bottom: 10px; /* Posição da mensagem ajustada */
     }
 }
+#megaShotButton {
+    background-color: yellow; /* Cor de fundo do botão */
+    animation: flame 1s infinite; /* Animação para o efeito de fogo */
+}
+
+@keyframes flame {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
@@ -124,6 +134,7 @@
         <button class="button" onclick="moveLeft()">←</button>
         <button class="button" onclick="moveRight()">→</button>
         <button class="button" onclick="shoot()">Atirar</button>
+        <button id="megaShotButton" class="button" onclick="megaShoot()">Mega Tiro</button>
     </div>
 
     <div id="message" class="message"></div>
@@ -219,6 +230,29 @@
         };
         bullets.push(bullet);
     });
+}
+function megaShoot() {
+    const megaBullet = {
+        x: player.x + player.width / 2 - 5,
+        y: player.y,
+        width: 10,
+        height: 30,
+        speed: 10,
+        color: 'yellow',
+        isMega: true // Indica que é um mega-tiro
+    };
+    bullets.push(megaBullet);
+
+    // Lógica para disparar o mega-tiro
+    const shootInterval = setInterval(() => {
+        if (megaBullet.y > 0) {
+            megaBullet.y -= megaBullet.speed;
+            ctx.fillStyle = megaBullet.color;
+            ctx.fillRect(megaBullet.x, megaBullet.y, megaBullet.width, megaBullet.height);
+        } else {
+            clearInterval(shootInterval);
+        }
+    }, 1000 / 60); // 60 FPS
 }
 
         function updateBullets() {
