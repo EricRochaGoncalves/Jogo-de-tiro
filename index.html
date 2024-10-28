@@ -214,23 +214,29 @@ canvas {
 
     <script>
 
+// Variáveis do jogo e inicialização do canvas
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let gameInterval;
+let player, bullets, enemies;
+let playerHits = 0;
+let xp = 0;
+let hearts = 5;
 
-    enemies.forEach(enemy => {
-        if (enemy.y + enemy.height >= player.y && 
-            enemy.x < player.x + player.width &&
-            enemy.x + enemy.width > player.x) {
-            playerHits++;
-            hearts--; // Diminui o número de corações
-            updateHeartsDisplay(); // Atualiza a exibição dos corações
-            if (hearts <= 0) {
-                gameOver();
-            } else {
-                flashPlayer();
-            }
-        }
-    });
+// Função para inicializar o jogo
+function initializeGame() {
+    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
+    bullets = [];
+    enemies = [];
+    playerHits = 0;
+    xp = 0;
+    hearts = 5;
+    updateHeartsDisplay();
+    updateXPDisplay();
+    document.getElementById('message').innerText = '';
 }
 
+// Função para iniciar o jogo
 function startGame() {
     document.getElementById('startButton').style.display = 'none';
     initializeGame();
@@ -238,8 +244,9 @@ function startGame() {
     spawnEnemy();
 }
 
+// Função para reiniciar o jogo
 function restartGame() {
-    clearInterval(gameInterval); // Parar o jogo atual
+    clearInterval(gameInterval);
     playerHits = 0;
     xp = 0;
     hearts = 5;
@@ -251,17 +258,7 @@ function restartGame() {
     spawnEnemy();
 }
 
-function initializeGame() {
-    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
-    bullets = [];
-    enemies = [];
-    playerHits = 0;
-    xp = 0;
-    hearts = 5;
-    updateHeartsDisplay();
-    document.getElementById('message').innerText = '';
-}
-
+// Função principal do jogo
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawPlayer();
@@ -271,6 +268,61 @@ function gameLoop() {
     drawEnemies();
 }
 
+// Função para desenhar o jogador
+function drawPlayer() {
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+}
+
+// Função para atualizar e desenhar projéteis (bullets)
+function updateBullets() {
+    bullets.forEach((bullet, index) => {
+        bullet.y -= bullet.speed;
+        if (bullet.y < 0) bullets.splice(index, 1); // Remove o projétil se sair da tela
+    });
+}
+
+// Função para atualizar a posição dos inimigos
+function updateEnemies() {
+    enemies.forEach((enemy, index) => {
+        enemy.y += enemy.speed;
+        if (enemy.y > canvas.height) enemies.splice(index, 1); // Remove o inimigo se sair da tela
+    });
+}
+
+// Função para desenhar os inimigos
+function drawEnemies() {
+    enemies.forEach(enemy => {
+        ctx.fillStyle = enemy.color;
+        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+    });
+}
+
+// Função para verificar colisões entre jogador e inimigos
+function checkCollisions() {
+    enemies.forEach((enemy, index) => {
+        if (enemy.y + enemy.height >= player.y && 
+            enemy.x < player.x + player.width &&
+            enemy.x + enemy.width > player.x) {
+            playerHits++;
+            hearts--;
+            updateHeartsDisplay();
+            enemies.splice(index, 1); // Remove o inimigo após colisão
+            if (hearts <= 0) {
+                gameOver();
+            } else {
+                flashPlayer();
+            }
+        }
+    });
+}
+
+// Função para atualizar a exibição dos corações
+function updateHeartsDisplay() {
+    document.getElementById('heartsCounter').innerText = "Corações: " + hearts;
+}
+
+// Função para exibir e atualizar a XP
 function showXP() {
     xp += 5; 
     updateXPDisplay();
@@ -280,10 +332,12 @@ function showXP() {
     }, 1000);
 }
 
+// Função para atualizar a exibição de XP
 function updateXPDisplay() {
-    xpCounter.innerText = "XP: " + xp;
+    document.getElementById('xpCounter').innerText = "XP: " + xp;
 }
 
+// Função de game over
 function gameOver() {
     clearInterval(gameInterval);
     document.getElementById('message').innerText = "Game Over!";
@@ -292,12 +346,47 @@ function gameOver() {
     shakePlayer();
 }
 
+// Função para spawnar inimigos
+function spawnEnemy() {
+    const enemy = {
+        x: Math.random() * (canvas.width - 50),
+        y: 0,
+        width: 50,
+        height: 50,
+        color: 'red',
+        speed: 2 + Math.random() * 2
+    };
+    enemies.push(enemy);
+}
+
+// Efeitos visuais para o jogador
+function flashPlayer() {
+    player.color = 'yellow';
+    setTimeout(() => { player.color = 'blue'; }, 100);
+}
+
+function shakePlayer() {
+    // Efeito de tremer
+    let shakeCount = 0;
+    const shakeInterval = setInterval(() => {
+        if (shakeCount < 10) {
+            player.x += (shakeCount % 2 === 0 ? -5 : 5);
+            shakeCount++;
+        } else {
+            clearInterval(shakeInterval);
+            player.x = canvas.width / 2 - 25; // Volta o player à posição inicial
+        }
+    }, 50);
+}
+
+// Função para alternar o menu
 function toggleMenu() {
     const menuContent = document.getElementById('menuContent');
     if (menuContent) {
         menuContent.style.display = (menuContent.style.display === 'block') ? 'none' : 'block';
     }
 }
+    
 
 
     </script>
