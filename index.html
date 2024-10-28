@@ -181,24 +181,33 @@
         }
 
         function shoot() {
-            const bullet = {
-                x: player.x + player.width / 2 - 2.5,
-                y: player.y,
-                width: 5,
-                height: 10,
-                speed: 5
-            };
-            bullets.push(bullet);
-        }
+    const angles = [-0.1, 0, 0.1]; // Ângulos para dispersão das balas (em radianos)
+    angles.forEach(angle => {
+        const bullet = {
+            x: player.x + player.width / 2 - 2.5,
+            y: player.y,
+            width: 5,
+            height: 10,
+            speed: 5,
+            angle: angle // Adiciona o ângulo de dispersão
+        };
+        bullets.push(bullet);
+    });
+}
 
         function updateBullets() {
-            ctx.fillStyle = 'yellow';
-            bullets.forEach(bullet => {
-                bullet.y -= bullet.speed;
-                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-            });
-            bullets = bullets.filter(bullet => bullet.y > 0);
-        }
+    ctx.fillStyle = 'yellow';
+    bullets.forEach(bullet => {
+        bullet.y -= bullet.speed * Math.cos(bullet.angle);
+        bullet.x += bullet.speed * Math.sin(bullet.angle);
+        
+        ctx.beginPath();
+        ctx.roundRect(bullet.x, bullet.y, bullet.width, bullet.height, 5); // Adiciona borda arredondada
+        ctx.fill();
+        ctx.closePath();
+    });
+    bullets = bullets.filter(bullet => bullet.y > 0);
+}
 
         function checkCollisions() {
             bullets.forEach((bullet, bulletIndex) => {
