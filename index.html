@@ -224,11 +224,13 @@ canvas {
     <script>
        
 
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const xpCounter = document.getElementById('xpCounter');
 let player, bullets, enemies, gameInterval, playerHits, xp;
-let hearts; // Adicione esta linha para armazenar os corações
+let hearts;
+
 function shootSpiral() {
     const bulletCount = 12; // Número de tiros em espiral
     const angleIncrement = (Math.PI * 2) / bulletCount; // Incremento do ângulo
@@ -246,6 +248,7 @@ function shootSpiral() {
         bullets.push(bullet);
     }
 }
+
 function updateBullets() {
     ctx.fillStyle = 'yellow';
     bullets.forEach(bullet => {
@@ -259,6 +262,7 @@ function updateBullets() {
     });
     bullets = bullets.filter(bullet => bullet.y > 0 && bullet.x > 0 && bullet.x < canvas.width); // Filtra balas fora da tela
 }
+
 function startGame() {
     document.getElementById('startButton').style.display = 'none';
     initializeGame();
@@ -340,15 +344,6 @@ function shoot() {
         speed: 5
     };
     bullets.push(bullet);
-}
-
-function updateBullets() {
-    ctx.fillStyle = 'yellow';
-    bullets.forEach(bullet => {
-        bullet.y -= bullet.speed;
-        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-    });
-    bullets = bullets.filter(bullet => bullet.y > 0);
 }
 
 function checkCollisions() {
@@ -453,7 +448,6 @@ function updateHeartsDisplay() {
         heartsContainer.innerHTML += '<div class="heart"></div>'; // Adiciona corações
     }
 }
-
 
 
     </script>
