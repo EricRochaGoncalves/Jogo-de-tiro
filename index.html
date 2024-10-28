@@ -327,9 +327,9 @@
         }
 
         function toggleMenu() {
-            const isVisible = menuContent.style.display === 'block';
-            menuContent.style.display = isVisible ? 'none' : 'block';
-        }
+    const menuContent = document.getElementById('menuContent');
+    menuContent.style.display = (menuContent.style.display === 'block') ? 'none' : 'block';
+}
     </script>
 </body>
 </html>
