@@ -155,6 +155,40 @@ canvas {
     background-color: #ffffff; /* Cor branca para os inimigos */
     border-radius: 10px; /* Bordas levemente arredondadas */
 }
+#heartsContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.heart {
+    width: 30px; /* Tamanho do coração */
+    height: 30px; /* Tamanho do coração */
+    background-color: red; /* Cor dos corações */
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Forma de coração */
+    display: inline-block;
+    margin: 0 5px; /* Espaçamento entre os corações */
+}
+
+#restartButton {
+    display: none; /* Inicialmente oculto */
+    width: 200px; /* Largura personalizada */
+    height: 70px; /* Altura personalizada */
+    background-color: #e74c3c; /* Cor vermelha para o botão de reiniciar */
+    color: #ffffff; /* Cor do texto */
+    border: 3px solid #ffffff; /* Borda branca */
+    border-radius: 10px; /* Bordas arredondadas */
+    font-size: 24px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor em forma de ponteiro */
+    transition: background-color 0.3s; /* Efeito de transição */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8); /* Sombra para o botão */
+    position: absolute; /* Para posicionar melhor */
+    bottom: 10px; /* Distância do fundo */
+}
+
+#restartButton:hover {
+    background-color: #c0392b; /* Cor do botão ao passar o mouse */
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
