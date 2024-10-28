@@ -227,10 +227,10 @@ function spawnEnemy() {
         height: 40,
         speed: Math.random() * 1 + 0.5,
         color: 'red',
-        hitCount: 0
+        hitCount: 0,
+        isHit: false // Nova propriedade para verificar se o inimigo foi atingido
     };
     enemies.push(enemy);
-    setTimeout(spawnEnemy, 1000);
 }
 
 function updateEnemies() {
