@@ -66,6 +66,29 @@
     font-size: 24px;
     transition: background-color 0.3s;
     font-family: 'Press Start 2P', cursive; /* Fonte de game */
+.hamburger {
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#menu {
+    position: absolute;
+    top: 60px; /* Ajuste a posição conforme necessário */
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
 }
 
 .button:hover, #startButton:hover, #restartButton:hover {
@@ -115,6 +138,10 @@
     </div>
 
     <script>
+function toggleMenu() {
+    const menu = document.getElementById('menu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const xpCounter = document.getElementById('xpCounter');
