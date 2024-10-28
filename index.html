@@ -84,6 +84,12 @@
             font-size: 16px;
             pointer-events: none;
         }
+/* Impedir scroll em dispositivos móveis */
+@media screen and (max-width: 768px) { /* Ajuste a largura conforme necessário */
+    body {
+        overflow: hidden; /* Impede o scroll da página em dispositivos móveis */
+    }
+}
 /* Estilo para o menu hambúrguer */
 #menuButton {
     position: absolute;
