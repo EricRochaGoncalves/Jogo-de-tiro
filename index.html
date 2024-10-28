@@ -6,110 +6,124 @@
     <title>Jogo de Tiro</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            width: 100vw; /* Define a largura para 100% */
-            background-color: #87CEEB;
-            font-family: 'Press Start 2P', cursive;
-        }
-        canvas {
-            background-color: black;
-        }
-        .controls {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .button {
-            width: 70px;
-            height: 70px;
-            margin: 0 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            background-color: #218838;
-        }
-        #startButton {
-            width: 200px; /* Largura personalizada */
-            height: 70px; /* Altura personalizada */
-            background-color: #007bff; /* Cor de fundo */
-            color: white; /* Cor do texto */
-            border: none; /* Sem borda */
-            border-radius: 10px; /* Bordas arredondadas */
-            font-size: 24px; /* Tamanho da fonte */
-            cursor: pointer; /* Cursor em forma de ponteiro */
-            transition: background-color 0.3s; /* Efeito de transição */
-        }
-        #startButton:hover {
-            background-color: #0056b3; /* Cor do botão ao passar o mouse */
-        }
-        #restartButton {
-            display: none; /* Inicialmente oculto */
-        }
-        .message {
-            position: absolute;
-            color: white;
-            font-size: 20px;
-            pointer-events: none;
-        }
-        #xpCounter {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: white;
-            font-size: 24px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        #creatorMessage {
-            position: absolute;
-            bottom: 20px;
-            color: white;
-            font-size: 16px;
-            pointer-events: none;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw; /* Define a largura para 100% */
+    background-color: #87CEEB;
+    font-family: 'Press Start 2P', cursive;
+}
+
+canvas {
+    background-color: black;
+    width: 90vw; /* Largura do canvas ajustada para 90% da largura da tela */
+    height: 60vh; /* Altura do canvas ajustada para 60% da altura da tela */
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.button {
+    width: 70px;
+    height: 70px;
+    margin: 0 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #218838;
+}
+
+#startButton {
+    width: 200px; /* Largura personalizada */
+    height: 70px; /* Altura personalizada */
+    background-color: #007bff; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: none; /* Sem borda */
+    border-radius: 10px; /* Bordas arredondadas */
+    font-size: 24px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor em forma de ponteiro */
+    transition: background-color 0.3s; /* Efeito de transição */
+}
+
+#startButton:hover {
+    background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
+
+#restartButton {
+    display: none; /* Inicialmente oculto */
+}
+
+.message {
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    pointer-events: none;
+}
+
+#xpCounter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#creatorMessage {
+    position: absolute;
+    bottom: 20px;
+    color: white;
+    font-size: 16px;
+    pointer-events: none;
+}
+
 /* Ajustes para dispositivos móveis */
 @media screen and (max-width: 768px) {
-    canvas {
-        width: 90vw; /* Largura do canvas ajustada para 90% da largura da tela */
-        height: 60vh; /* Altura do canvas ajustada para 60% da altura da tela */
-    }
     .button {
         width: 50px; /* Largura dos botões ajustada */
         height: 50px; /* Altura dos botões ajustada */
         margin: 0 10px; /* Margem ajustada */
         font-size: 18px; /* Tamanho da fonte dos botões ajustado */
     }
+    
     #startButton, #restartButton {
         width: 150px; /* Largura dos botões de início e reinício ajustada */
         height: 50px; /* Altura dos botões de início e reinício ajustada */
         font-size: 18px; /* Tamanho da fonte ajustado */
     }
+
     #xpCounter {
         font-size: 18px; /* Tamanho da fonte do contador de XP ajustado */
         padding: 3px 8px; /* Padding ajustado */
     }
+
     #creatorMessage {
         font-size: 14px; /* Tamanho da fonte da mensagem do criador ajustado */
         bottom: 10px; /* Posição da mensagem ajustada */
     }
 }
+
 #megaShotButton {
     background-color: yellow; /* Cor de fundo do botão */
     animation: flame 1s infinite; /* Animação para o efeito de fogo */
