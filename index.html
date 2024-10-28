@@ -293,6 +293,40 @@
             const isVisible = menuContent.style.display === 'block';
             menuContent.style.display = isVisible ? 'none' : 'block';
         }
+function megaShot() {
+    const megaBullet = {
+        x: player.x + player.width / 2 - 25, // Centraliza a bala
+        y: player.y,
+        width: 50, // Largura maior
+        height: 20, // Altura maior
+        speed: 3, // Velocidade da bala
+        color: 'orange',
+    };
+
+    // Adiciona a mega-bala ao array de balas
+    bullets.push(megaBullet);
+
+    // Chama a animação de fogo
+    createFireAnimation(megaBullet);
+}
+
+function createFireAnimation(bullet) {
+    const fireAnimation = document.createElement('div');
+    fireAnimation.style.position = 'absolute';
+    fireAnimation.style.left = `${bullet.x}px`;
+    fireAnimation.style.top = `${bullet.y}px`;
+    fireAnimation.style.width = `${bullet.width}px`;
+    fireAnimation.style.height = `${bullet.height}px`;
+    fireAnimation.style.background = 'radial-gradient(circle, yellow, red)'; // Fogo
+    fireAnimation.style.borderRadius = '50%';
+    fireAnimation.style.pointerEvents = 'none';
+    document.body.appendChild(fireAnimation);
+
+    // Remove a animação após 0.5 segundos
+    setTimeout(() => {
+        fireAnimation.remove();
+    }, 500);
+}
     </script>
 </body>
 </html>
