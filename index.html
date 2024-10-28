@@ -281,9 +281,12 @@ function checkCollisions() {
                 bullet.y < enemy.y + enemy.height &&
                 bullet.y + bullet.height > enemy.y) {
                 enemy.hitCount++;
+                enemy.isHit = true; // Marca o inimigo como atingido
+
                 if (enemy.hitCount <= 3) {
                     enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
                 } else {
+                    createSmoke(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2); // Adiciona fumaça
                     showXP();
                     bullets.splice(bulletIndex, 1);
                     enemies.splice(enemyIndex, 1);
