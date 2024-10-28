@@ -246,6 +246,19 @@ function shootSpiral() {
         bullets.push(bullet);
     }
 }
+function updateBullets() {
+    ctx.fillStyle = 'yellow';
+    bullets.forEach(bullet => {
+        if (bullet.angle) { // Verifica se o bullet tem um ângulo
+            bullet.x += bullet.speed * Math.cos(bullet.angle); // Atualiza a posição em X
+            bullet.y += bullet.speed * Math.sin(bullet.angle); // Atualiza a posição em Y
+        } else {
+            bullet.y -= bullet.speed; // Para tiros normais
+        }
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+    bullets = bullets.filter(bullet => bullet.y > 0 && bullet.x > 0 && bullet.x < canvas.width); // Filtra balas fora da tela
+}
 function startGame() {
     document.getElementById('startButton').style.display = 'none';
     initializeGame();
