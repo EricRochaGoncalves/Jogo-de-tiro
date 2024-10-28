@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,131 +6,125 @@
     <title>Jogo de Tiro</title>
     <style>
         * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    overflow: hidden;
-}
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
 
-body {
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
-    background-color: #87CEEB;
-    font-family: 'Press Start 2P', cursive;
-}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            background-color: #87CEEB;
+            font-family: 'Press Start 2P', cursive;
+        }
 
-canvas {
-    background-color: black;
-}
+        canvas {
+            background-color: black;
+        }
 
-.controls {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
 
-.message {
-    position: absolute;
-    color: white;
-    font-size: 20px;
-    pointer-events: none;
-}
+        .message {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            pointer-events: none;
+        }
 
-#xpCounter {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: white;
-    font-size: 24px;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 5px;
-}
+        #xpCounter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 24px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
 
-#creatorMessage {
-    position: absolute;
-    bottom: 20px;
-    color: white;
-    font-size: 16px;
-    pointer-events: none;
-}
+        #creatorMessage {
+            position: absolute;
+            bottom: 20px;
+            color: white;
+            font-size: 16px;
+            pointer-events: none;
+        }
 
-.button, #startButton, #restartButton {
-    width: 70px;
-    height: 70px;
-    margin: 0 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    transition: background-color 0.3s;
-    font-family: 'Press Start 2P', cursive;
-}
+        .button, #startButton, #restartButton {
+            width: 70px;
+            height: 70px;
+            margin: 0 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background-color 0.3s;
+            font-family: 'Press Start 2P', cursive;
+        }
 
-#menu {
-    position: absolute;
-    top: 60px; /* Ajuste a posição conforme necessário */
-    right: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    border-radius: 5px;
-}
+        #menu {
+            position: absolute;
+            top: 60px; /* Ajuste a posição conforme necessário */
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
 
-#menu a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-}
+        #menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
 
-.button:hover, #startButton:hover, #restartButton:hover {
-    background-color: #218838; /* Cor ao passar o mouse */
-}
+        .button:hover, #startButton:hover, #restartButton:hover {
+            background-color: #218838; /* Cor ao passar o mouse */
+        }
 
-#startButton {
-    width: 200px; /* Largura personalizada */
-    height: 70px; /* Altura personalizada */
-    background-color: #007bff; /* Cor de fundo */
-}
+        #startButton {
+            width: 200px; /* Largura personalizada */
+            height: 70px; /* Altura personalizada */
+            background-color: #007bff; /* Cor de fundo */
+        }
 
-#startButton:hover {
-    background-color: #0056b3; /* Cor do botão ao passar o mouse */
-}
+        #startButton:hover {
+            background-color: #0056b3; /* Cor do botão ao passar o mouse */
+        }
 
-#restartButton {
-    display: none; /* Inicialmente oculto */
-}
+        #restartButton {
+            display: none; /* Inicialmente oculto */
+        }
 
-.hamburger {
-    font-size: 30px; /* Aumenta o tamanho do ícone do menu */
-    cursor: pointer;
-    color: white;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
+        .hamburger {
+            font-size: 30px; /* Aumenta o tamanho do ícone do menu */
+            cursor: pointer;
+            color: white;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
 
-/* Adicionando estilo para mega-balas */
-.mega-bullet {
-    position: relative;
-    box-shadow: 0 0 10px orange; /* Efeito de brilho */
-}
-@media (max-width: 600px) {
-    #gameCanvas {
-        max-width: 100%; /* Permite que o canvas ocupe toda a largura em telas pequenas */
-        max-height: 100%; /* Permite que o canvas ocupe toda a altura em telas pequenas */
-    }
+        @media (max-width: 600px) {
+            #gameCanvas {
+                max-width: 100%; /* Permite que o canvas ocupe toda a largura em telas pequenas */
+                max-height: 100%; /* Permite que o canvas ocupe toda a altura em telas pequenas */
+            }
 
-    #xpCounter, #message, #startButton, #restartButton {
-        font-size: 4vw; /* Aumenta o tamanho da fonte em telas pequenas */
-    }
-}
+            #xpCounter, #message, #startButton, #restartButton {
+                font-size: 4vw; /* Aumenta o tamanho da fonte em telas pequenas */
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
@@ -153,7 +145,6 @@ canvas {
         <button class="button" onclick="moveLeft()">←</button>
         <button class="button" onclick="moveRight()">→</button>
         <button class="button" onclick="shoot()">Atirar</button>
-     
     </div>
     <div id="message" class="message"></div>
     
@@ -163,193 +154,192 @@ canvas {
 
     <script>
         const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const xpCounter = document.getElementById('xpCounter');
-let player, bullets, enemies, gameInterval, playerHits, xp;
+        const ctx = canvas.getContext('2d');
+        const xpCounter = document.getElementById('xpCounter');
+        let player, bullets, enemies, gameInterval, playerHits, xp;
 
-function toggleMenu() {
-    const menu = document.getElementById('menu');
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
 
-function startGame() {
-    document.getElementById('startButton').style.display = 'none';
-    initializeGame();
-    gameInterval = setInterval(gameLoop, 1000 / 60);
-    spawnEnemy();
-}
+        function startGame() {
+            document.getElementById('startButton').style.display = 'none';
+            initializeGame();
+            gameInterval = setInterval(gameLoop, 1000 / 60);
+            spawnEnemy();
+        }
 
-function restartGame() {
-    playerHits = 0;
-    xp = 0;
-    initializeGame();
-    updateXPDisplay();
-    document.getElementById('restartButton').style.display = 'none';
-    gameInterval = setInterval(gameLoop, 1000 / 60);
-    spawnEnemy();
-}
+        function restartGame() {
+            playerHits = 0;
+            xp = 0;
+            initializeGame();
+            updateXPDisplay();
+            document.getElementById('restartButton').style.display = 'none';
+            gameInterval = setInterval(gameLoop, 1000 / 60);
+            spawnEnemy();
+        }
 
-function initializeGame() {
-    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
-    bullets = [];
-    enemies = [];
-    playerHits = 0;
-    xp = 0;
-    document.getElementById('message').innerText = '';
-}
+        function initializeGame() {
+            player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
+            bullets = [];
+            enemies = [];
+            playerHits = 0;
+            xp = 0;
+            document.getElementById('message').innerText = '';
+        }
 
-function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlayer();
-    updateBullets();
-    updateEnemies();
-    checkCollisions();
-    drawEnemies();
-}
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            updateBullets();
+            updateEnemies();
+            checkCollisions();
+            drawEnemies();
+        }
 
-function drawPlayer() {
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-}
+        function drawPlayer() {
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
 
-function drawEnemies() {
-    enemies.forEach(enemy => {
-        ctx.fillStyle = enemy.isHit ? 'yellow' : enemy.color; // Mudança de cor se atingido
-        const drawWidth = enemy.isHit ? enemy.width * 1.5 : enemy.width; // Alterar largura se atingido
-        const drawHeight = enemy.isHit ? enemy.height / 2 : enemy.height; // Alterar altura se atingido
-        ctx.fillRect(enemy.x, enemy.y, drawWidth, drawHeight); // Desenha o inimigo
-    });
-}
+        function drawEnemies() {
+            enemies.forEach(enemy => {
+                ctx.fillStyle = enemy.isHit ? 'yellow' : enemy.color; // Mudança de cor se atingido
+                const drawWidth = enemy.isHit ? enemy.width * 1.5 : enemy.width; // Alterar largura se atingido
+                const drawHeight = enemy.isHit ? enemy.height / 2 : enemy.height; // Alterar altura se atingido
+                ctx.fillRect(enemy.x, enemy.y, drawWidth, drawHeight); // Desenha o inimigo
+            });
+        }
 
-function spawnEnemy() {
-    const enemy = {
-        x: Math.random() * (canvas.width - 40),
-        y: 0,
-        width: 40,
-        height: 40,
-        speed: Math.random() * 1 + 0.5,
-        color: 'red',
-        hitCount: 0,
-        isHit: false // Nova propriedade para verificar se o inimigo foi atingido
-    };
-    enemies.push(enemy);
-}
+        function spawnEnemy() {
+            const enemy = {
+                x: Math.random() * (canvas.width - 40),
+                y: 0,
+                width: 40,
+                height: 40,
+                speed: Math.random() * 1 + 0.5,
+                color: 'red',
+                hitCount: 0,
+                isHit: false // Nova propriedade para verificar se o inimigo foi atingido
+            };
+            enemies.push(enemy);
+        }
 
-function updateEnemies() {
-    enemies.forEach(enemy => {
-        enemy.y += enemy.speed;
-    });
-    enemies = enemies.filter(enemy => enemy.y < canvas.height);
-}
+        function updateEnemies() {
+            enemies.forEach(enemy => {
+                enemy.y += enemy.speed;
+            });
+            enemies = enemies.filter(enemy => enemy.y < canvas.height);
+        }
 
-function shoot() {
-    const bulletCount = 3;
-    const bulletSpread = 15; // Ângulo de espalhamento em graus
+        function shoot() {
+            const bulletCount = 3;
+            const bulletSpread = 15; // Ângulo de espalhamento em graus
 
-    for (let i = -1; i <= 1; i++) {
-        const bullet = {
-            x: player.x + player.width / 2 - 2.5,
-            y: player.y,
-            width: 5,
-            height: 10,
-            speed: 5,
-            angle: i * bulletSpread // Calcular ângulo em graus
-        };
-        bullets.push(bullet);
-    }
-}
+            for (let i = -1; i <= 1; i++) {
+                const bullet = {
+                    x: player.x + player.width / 2 - 2.5,
+                    y: player.y,
+                    width: 5,
+                    height: 10,
+                    speed: 5,
+                    angle: i * bulletSpread // Calcular ângulo em graus
+                };
+                bullets.push(bullet);
+            }
+        }
 
-function updateBullets() {
-    ctx.fillStyle = 'yellow';
-    bullets.forEach(bullet => {
-        bullet.y -= bullet.speed; // Move a bala para cima
-        bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Aplica o espalhamento
+        function updateBullets() {
+            ctx.fillStyle = 'yellow';
+            bullets.forEach(bullet => {
+                bullet.y -= bullet.speed; // Move a bala para cima
+                bullet.x += Math.sin(bullet.angle * Math.PI / 180) * bullet.speed; // Aplica o espalhamento
 
-        // Desenhar a bala como um círculo
-        ctx.beginPath();
-        ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width / 2, 0, Math.PI * 2);
-        ctx.fill();
-    });
-    // Remove as balas que saem da tela
-    bullets = bullets.filter(bullet => bullet.y > 0);
-}
+                // Desenhar a bala como um círculo
+                ctx.beginPath();
+                ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width / 2, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            // Remove as balas que saem da tela
+            bullets = bullets.filter(bullet => bullet.y > 0);
+        }
 
-function checkCollisions() {
-    bullets.forEach((bullet, bulletIndex) => {
-        enemies.forEach((enemy, enemyIndex) => {
-            if (bullet.x < enemy.x + enemy.width &&
-                bullet.x + bullet.width > enemy.x &&
-                bullet.y < enemy.y + enemy.height &&
-                bullet.y + bullet.height > enemy.y) {
-                enemy.hitCount++;
-                enemy.isHit = true; // Marca o inimigo como atingido
+        function checkCollisions() {
+            bullets.forEach((bullet, bulletIndex) => {
+                enemies.forEach((enemy, enemyIndex) => {
+                    if (bullet.x < enemy.x + enemy.width &&
+                        bullet.x + bullet.width > enemy.x &&
+                        bullet.y < enemy.y + enemy.height &&
+                        bullet.y + bullet.height > enemy.y) {
+                        enemy.hitCount++;
+                        enemy.isHit = true; // Marca o inimigo como atingido
 
-                if (enemy.hitCount <= 3) {
-                    enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
-                } else {
-                    showXP();
-                    bullets.splice(bulletIndex, 1);
-                    enemies.splice(enemyIndex, 1);
-                    return; // Break out of the inner loop
+                        if (enemy.hitCount <= 3) {
+                            enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
+                        } else {
+                            showXP();
+                            bullets.splice(bulletIndex, 1);
+                            enemies.splice(enemyIndex, 1);
+                            return; // Break out of the inner loop
+                        }
+                    }
+                });
+            });
+
+            enemies.forEach(enemy => {
+                if (enemy.y + enemy.height >= player.y && 
+                    enemy.x < player.x + player.width &&
+                    enemy.x + enemy.width > player.x) {
+                    playerHits++;
+                    if (playerHits >= 3) {
+                        gameOver();
+                    } else {
+                        flashPlayer();
+                    }
                 }
-            }
-        });
-    });
+            });
+        }
 
-    enemies.forEach(enemy => {
-        if (enemy.y + enemy.height >= player.y && 
-            enemy.x < player.x + player.width &&
-            enemy.x + enemy.width > player.x) {
-            playerHits++;
-            if (playerHits >= 3) {
-                gameOver();
-            } else {
-                flashPlayer();
+        function flashPlayer() {
+            const originalColor = player.color;
+            let flashes = 0;
+            const flashInterval = setInterval(() => {
+                player.color = (flashes % 2 === 0) ? 'red' : originalColor;
+                flashes++;
+                if (flashes >= 6) {
+                    clearInterval(flashInterval);
+                    player.color = originalColor;
+                }
+            }, 200);
+        }
+
+        function gameOver() {
+            clearInterval(gameInterval);
+            document.getElementById('message').innerText = 'Game Over! Você foi atingido!';
+            document.getElementById('restartButton').style.display = 'block';
+        }
+
+        function showXP() {
+            xp++;
+            updateXPDisplay();
+        }
+
+        function updateXPDisplay() {
+            xpCounter.innerText = `XP: ${xp}`;
+        }
+
+        function moveLeft() {
+            if (player.x > 0) {
+                player.x -= 20; // Move o jogador para a esquerda
             }
         }
-    });
-}
 
-function flashPlayer() {
-    const originalColor = player.color;
-    let flashes = 0;
-    const flashInterval = setInterval(() => {
-        player.color = (flashes % 2 === 0) ? 'red' : originalColor;
-        flashes++;
-        if (flashes >= 6) {
-            clearInterval(flashInterval);
-            player.color = originalColor;
+        function moveRight() {
+            if (player.x < canvas.width - player.width) {
+                player.x += 20; // Move o jogador para a direita
+            }
         }
-    }, 200);
-}
-
-function gameOver() {
-    clearInterval(gameInterval);
-    document.getElementById('message').innerText = 'Game Over! Você foi atingido!';
-    document.getElementById('restartButton').style.display = 'block';
-}
-
-function showXP() {
-    xp++;
-    updateXPDisplay();
-}
-
-function updateXPDisplay() {
-    xpCounter.innerText = `XP: ${xp}`;
-}
-
-function moveLeft() {
-    if (player.x > 0) {
-        player.x -= 20; // Move o jogador para a esquerda
-    }
-}
-
-function moveRight() {
-    if (player.x < canvas.width - player.width) {
-        player.x += 20; // Move o jogador para a direita
-    }
-}
     </script>
 </body>
 </html>
-
