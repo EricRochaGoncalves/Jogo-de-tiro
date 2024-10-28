@@ -29,38 +29,7 @@
             justify-content: center;
             margin-top: 10px;
         }
-        .button {
-            width: 70px;
-            height: 70px;
-            margin: 0 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            background-color: #218838;
-        }
-        #startButton {
-            width: 200px; /* Largura personalizada */
-            height: 70px; /* Altura personalizada */
-            background-color: #007bff; /* Cor de fundo */
-            color: white; /* Cor do texto */
-            border: none; /* Sem borda */
-            border-radius: 10px; /* Bordas arredondadas */
-            font-size: 24px; /* Tamanho da fonte */
-            cursor: pointer; /* Cursor em forma de ponteiro */
-            transition: background-color 0.3s; /* Efeito de transição */
-        }
-        #startButton:hover {
-            background-color: #0056b3; /* Cor do botão ao passar o mouse */
-        }
-        #restartButton {
-            display: none; /* Inicialmente oculto */
-        }
+        
         .message {
             position: absolute;
             color: white;
@@ -84,6 +53,37 @@
             font-size: 16px;
             pointer-events: none;
         }
+        .button, #startButton, #restartButton {
+          width: 70px;
+          height: 70px;
+          margin: 0 15px;
+          background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s;
+    font-family: 'Press Start 2P', cursive; /* Fonte de game */
+}
+
+.button:hover, #startButton:hover, #restartButton:hover {
+    background-color: #218838; /* Cor ao passar o mouse */
+}
+
+#startButton {
+    width: 200px; /* Largura personalizada */
+    height: 70px; /* Altura personalizada */
+    background-color: #007bff; /* Cor de fundo */
+}
+
+#startButton:hover {
+    background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
+
+#restartButton {
+    display: none; /* Inicialmente oculto */
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
