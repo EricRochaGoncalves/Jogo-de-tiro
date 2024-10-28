@@ -228,6 +228,31 @@
             };
             bullets.push(bullet);
         }
+function megaShot() {
+    const megaBullet = {
+        x: player.x + player.width / 2 - 25, // Centraliza a bala
+        y: player.y,
+        radius: 25, // Raio da bala (bala gigante)
+        speed: 3, // Velocidade da bala
+        color: 'orange', // Cor da mega bala
+    };
+
+    // Adiciona a mega-bala ao array de balas
+    bullets.push(megaBullet);
+}
+function updateBullets() {
+    bullets.forEach(bullet => {
+        bullet.y -= bullet.speed; // Move a bala para cima
+
+        // Desenha a bala como um círculo
+        ctx.fillStyle = bullet.color;
+        ctx.beginPath();
+        ctx.arc(bullet.x + bullet.radius, bullet.y + bullet.radius, bullet.radius, 0, Math.PI * 2); // Desenha o círculo
+        ctx.fill();
+    });
+    // Remove balas que saem da tela
+    bullets = bullets.filter(bullet => bullet.y > 0);
+}
 
         function updateBullets() {
             ctx.fillStyle = 'yellow';
