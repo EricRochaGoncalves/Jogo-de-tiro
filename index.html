@@ -6,91 +6,108 @@
     <title>Jogo de Tiro</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            width: 100vw; /* Define a largura para 100% */
-            background-color: #87CEEB;
-            font-family: 'Press Start 2P', cursive;
-        }
-        canvas {
-            background-color: black;
-        }
-        .controls {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .button {
-            width: 70px;
-            height: 70px;
-            margin: 0 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            background-color: #218838;
-        }
-        #startButton {
-            width: 200px; /* Largura personalizada */
-            height: 70px; /* Altura personalizada */
-            background-color: #007bff; /* Cor de fundo */
-            color: white; /* Cor do texto */
-            border: none; /* Sem borda */
-            border-radius: 10px; /* Bordas arredondadas */
-            font-size: 24px; /* Tamanho da fonte */
-            cursor: pointer; /* Cursor em forma de ponteiro */
-            transition: background-color 0.3s; /* Efeito de transição */
-        }
-        #startButton:hover {
-            background-color: #0056b3; /* Cor do botão ao passar o mouse */
-        }
-        #restartButton {
-            display: none; /* Inicialmente oculto */
-        }
-        .message {
-            position: absolute;
-            color: white;
-            font-size: 20px;
-            pointer-events: none;
-        }
-        #xpCounter {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: white;
-            font-size: 24px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        #creatorMessage {
-            position: absolute;
-            bottom: 20px;
-            color: white;
-            font-size: 16px;
-            pointer-events: none;
-        }
-/* Impedir scroll em dispositivos móveis */
-@media screen and (max-width: 768px) { /* Ajuste a largura conforme necessário */
-    body {
-        overflow: hidden; /* Impede o scroll da página em dispositivos móveis */
-    }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-/* Estilo para o menu hambúrguer */
+
+body {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw; /* Define a largura para 100% */
+    background-color: #000000; /* Fundo preto */
+    font-family: 'Press Start 2P', cursive; /* Fonte de estilo retro de jogos */
+    color: #ffffff; /* Texto branco */
+}
+
+canvas {
+    background-color: #3c3c3c; /* Cor do canvas, mais próxima da paleta de Undertale */
+    border: 5px solid #ff7777; /* Borda vermelha para dar destaque */
+    box-shadow: 0 0 10px #ff7777; /* Sombra vermelha para efeito neon */
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Aumentado para mais espaçamento */
+}
+
+.button {
+    width: 70px;
+    height: 70px;
+    margin: 0 10px; /* Reduzido o espaço entre os botões */
+    background-color: #ff5555; /* Cor vermelha para os botões */
+    color: white;
+    border: 3px solid #ffffff; /* Borda branca para os botões */
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s, transform 0.1s; /* Efeito de transição */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8); /* Sombra para os botões */
+}
+
+.button:hover {
+    background-color: #ff7777; /* Cor ao passar o mouse */
+    transform: translateY(-2px); /* Efeito de movimento ao passar o mouse */
+}
+
+.button:active {
+    transform: translateY(1px); /* Efeito de movimento ao clicar */
+}
+
+#startButton {
+    width: 200px; /* Largura personalizada */
+    height: 70px; /* Altura personalizada */
+    background-color: #2ecc71; /* Cor verde para o botão de iniciar */
+    color: #ffffff; /* Cor do texto */
+    border: 3px solid #ffffff; /* Borda branca */
+    border-radius: 10px; /* Bordas arredondadas */
+    font-size: 24px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor em forma de ponteiro */
+    transition: background-color 0.3s; /* Efeito de transição */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8); /* Sombra para o botão */
+}
+
+#startButton:hover {
+    background-color: #27ae60; /* Cor do botão ao passar o mouse */
+}
+
+#restartButton {
+    display: none; /* Inicialmente oculto */
+}
+
+.message {
+    position: absolute;
+    color: #ffcc00; /* Cor amarela para mensagens */
+    font-size: 20px;
+    pointer-events: none;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8); /* Sombra para texto */
+}
+
+#xpCounter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #ffcc00; /* Cor amarela para XP */
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo semitransparente */
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8); /* Sombra para o contador de XP */
+}
+
+#creatorMessage {
+    position: absolute;
+    bottom: 20px;
+    color: #ffffff; /* Texto branco */
+    font-size: 16px;
+    pointer-events: none;
+}
+
 #menuButton {
     position: absolute;
     top: 10px;
@@ -99,26 +116,30 @@
     border: none;
     cursor: pointer;
     font-size: 30px;
-    color: white;
+    color: #ffffff; /* Texto do botão do menu */
 }
+
 #menuContent {
     display: none; /* Inicialmente oculto */
     position: absolute;
     top: 50px;
     right: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo mais escuro para o menu */
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
 #menuContent a {
-    color: white;
+    color: #ff5555; /* Link vermelho */
     text-decoration: none;
     display: block;
     padding: 5px 0;
+    transition: color 0.3s; /* Transição de cor ao passar o mouse */
 }
+
 #menuContent a:hover {
-    color: #28a745;
+    color: #ffcc00; /* Cor amarela ao passar o mouse */
 }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
