@@ -222,6 +222,30 @@ canvas {
 </div>
 
     <script>
+function showDialog(character) {
+    const dialog = {
+        "Sans": ["Hey, you wanna have some fun?", "Don't be so serious!"],
+        "Papyrus": ["NYEH HEH HEH! I will capture you!", "I am the great Papyrus!"]
+    };
+    
+    const messageContainer = document.getElementById('message');
+    messageContainer.innerText = dialog[character][Math.floor(Math.random() * dialog[character].length)];
+    
+    setTimeout(() => {
+        messageContainer.innerText = ''; // Limpa a mensagem após um tempo
+    }, 3000);
+}
+
+// Exemplo de chamada quando um inimigo é atingido
+function checkCollisions() {
+    // ... Código existente ...
+    
+    enemies.forEach(enemy => {
+        if (enemy.hitCount === 3) {
+            showDialog("Sans"); // Exibe diálogo do Sans ao atingir o inimigo 3 vezes
+        }
+    });
+}
        
 
 
