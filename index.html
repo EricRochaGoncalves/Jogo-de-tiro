@@ -140,167 +140,168 @@
     </div>
 
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const xpCounter = document.getElementById('xpCounter');
-        let player, bullets, enemies, gameInterval, playerHits, xp;
+        
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const xpCounter = document.getElementById('xpCounter');
+let player, bullets, enemies, gameInterval, playerHits, xp;
 
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
+function toggleMenu() {
+    const menu = document.getElementById('menu');
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
 
-        function startGame() {
-            document.getElementById('startButton').style.display = 'none';
-            initializeGame();
-            gameInterval = setInterval(gameLoop, 1000 / 60);
-            spawnEnemy();
-        }
+function startGame() {
+    document.getElementById('startButton').style.display = 'none';
+    initializeGame();
+    gameInterval = setInterval(gameLoop, 1000 / 60);
+    spawnEnemy();
+}
 
-        function restartGame() {
-            playerHits = 0;
-            xp = 0;
-            initializeGame();
-            updateXPDisplay();
-            document.getElementById('restartButton').style.display = 'none';
-            gameInterval = setInterval(gameLoop, 1000 / 60);
-            spawnEnemy();
-        }
+function restartGame() {
+    playerHits = 0;
+    xp = 0;
+    initializeGame();
+    updateXPDisplay();
+    document.getElementById('restartButton').style.display = 'none';
+    gameInterval = setInterval(gameLoop, 1000 / 60);
+    spawnEnemy();
+}
 
-        function initializeGame() {
-            player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
-            bullets = [];
-            enemies = [];
-            playerHits = 0;
-            xp = 0;
-            document.getElementById('message').innerText = '';
-        }
+function initializeGame() {
+    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
+    bullets = [];
+    enemies = [];
+    playerHits = 0;
+    xp = 0;
+    document.getElementById('message').innerText = '';
+}
 
-        function gameLoop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlayer();
-            updateBullets();
-            updateEnemies();
-            checkCollisions();
-            drawEnemies();
-        }
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlayer();
+    updateBullets();
+    updateEnemies();
+    checkCollisions();
+    drawEnemies();
+}
 
-        function drawPlayer() {
-            ctx.fillStyle = player.color;
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-        }
+function drawPlayer() {
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+}
 
-        function drawEnemies() {
-            enemies.forEach(enemy => {
-                ctx.fillStyle = enemy.color;
-                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-            });
-        }
+function drawEnemies() {
+    enemies.forEach(enemy => {
+        ctx.fillStyle = enemy.color;
+        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+    });
+}
 
-        function spawnEnemy() {
-            const enemy = {
-                x: Math.random() * (canvas.width - 40),
-                y: 0,
-                width: 40,
-                height: 40,
-                speed: Math.random() * 1 + 0.5,
-                color: 'red',
-                hitCount: 0
-            };
-            enemies.push(enemy);
-            setTimeout(spawnEnemy, 1000);
-        }
-
-        function updateEnemies() {
-            enemies.forEach(enemy => {
-                enemy.y += enemy.speed;
-            });
-            enemies = enemies.filter(enemy => enemy.y < canvas.height);
-        }
-
-        function shoot() {
-            const bullet = {
-                x: player.x + player.width / 2 - 2.5,
-                y: player.y,
-                width: 5,
-                height: 10,
-                speed: 5
-            };
-            bullets.push(bullet);
-        }
-function megaShot() {
-    const megaBullet = {
-        x: player.x + player.width / 2 - 25, // Centraliza a bala
-        y: player.y,
-        radius: 25, // Raio da bala (bala gigante)
-        speed: 3, // Velocidade da bala
-        color: 'orange', // Cor da mega bala
+function spawnEnemy() {
+    const enemy = {
+        x: Math.random() * (canvas.width - 40),
+        y: 0,
+        width: 40,
+        height: 40,
+        speed: Math.random() * 1 + 0.5,
+        color: 'red',
+        hitCount: 0
     };
+    enemies.push(enemy);
+    setTimeout(spawnEnemy, 1000);
+}
 
-    // Adiciona a mega-bala ao array de balas
+function updateEnemies() {
+    enemies.forEach(enemy => {
+        enemy.y += enemy.speed;
+    });
+    enemies = enemies.filter(enemy => enemy.y < canvas.height);
+}
+
+function shoot() {
+    const bullet = {
+        x: player.x + player.width / 2 - 2.5,
+        y: player.y,
+        width: 5,
+        height: 10,
+        speed: 5
+    };
+    bullets.push(bullet);
+}
+
+function megaShot() {
+    for (let i = 0; i < 5; i++) {
+        shoot(); // Dispara 5 balas de uma vez
+    }
+
+    // Cria uma mega-bala
+    const megaBullet = {
+        x: player.x + player.width / 2 - 25,
+        y: player.y,
+        radius: 25,
+        speed: 3,
+        color: 'orange',
+    };
     bullets.push(megaBullet);
 }
+
 function updateBullets() {
     bullets.forEach(bullet => {
-        bullet.y -= bullet.speed; // Move a bala para cima
+        bullet.y -= bullet.speed;
 
-        // Desenha a bala como um círculo
-        ctx.fillStyle = bullet.color;
-        ctx.beginPath();
-        ctx.arc(bullet.x + bullet.radius, bullet.y + bullet.radius, bullet.radius, 0, Math.PI * 2); // Desenha o círculo
-        ctx.fill();
+        // Verifica se é uma mega-bala
+        if (bullet.radius) {
+            ctx.fillStyle = bullet.color;
+            ctx.beginPath();
+            ctx.arc(bullet.x + bullet.radius, bullet.y + bullet.radius, bullet.radius, 0, Math.PI * 2);
+            ctx.fill();
+        } else {
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        }
     });
-    // Remove balas que saem da tela
     bullets = bullets.filter(bullet => bullet.y > 0);
 }
 
-        function updateBullets() {
-            ctx.fillStyle = 'yellow';
-            bullets.forEach(bullet => {
-                bullet.y -= bullet.speed;
-                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-            });
-            bullets = bullets.filter(bullet => bullet.y > 0);
-        }
-
-        function checkCollisions() {
-            bullets.forEach((bullet, bulletIndex) => {
-                enemies.forEach((enemy, enemyIndex) => {
-                    if (bullet.x < enemy.x + enemy.width &&
-                        bullet.x + bullet.width > enemy.x &&
-                        bullet.y < enemy.y + enemy.height &&
-                        bullet.y + bullet.height > enemy.y) {
-                        enemy.hitCount++;
-                        if (enemy.hitCount <= 3) {
-                            enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
-                        } else {
-                            showXP();
-                            bullets.splice(bulletIndex, 1);
-                            enemies.splice(enemyIndex, 1);
-                        }
-                    }
-                });
-            });
-
-            enemies.forEach(enemy => {
-                if (enemy.y + enemy.height >= player.y && 
-                    enemy.x < player.x + player.width &&
-                    enemy.x + enemy.width > player.x) {
-                    playerHits++;
-                    if (playerHits >= 3) {
-                        gameOver();
-                    } else {
-                        flashPlayer();
-                    }
+function checkCollisions() {
+    bullets.forEach((bullet, bulletIndex) => {
+        enemies.forEach((enemy, enemyIndex) => {
+            if (bullet.x < enemy.x + enemy.width &&
+                bullet.x + bullet.width > enemy.x &&
+                bullet.y < enemy.y + enemy.height &&
+                bullet.y + bullet.height > enemy.y) {
+                enemy.hitCount++;
+                if (enemy.hitCount <= 3) {
+                    enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
+                } else {
+                    showXP();
+                    bullets.splice(bulletIndex, 1);
+                    enemies.splice(enemyIndex, 1);
                 }
-            });
-        }
+            }
+        });
+    });
 
-        function flashPlayer() {
+    enemies.forEach(enemy => {
+        if (enemy.y + enemy.height >= player.y && 
+            enemy.x < player.x + player.width &&
+            enemy.x + enemy.width > player.x) {
+            playerHits++;
+            if (playerHits >= 3) {
+                gameOver();
+            } else {
+                flashPlayer();
+            }
+        }
+    });
+}
+
+function flashPlayer() {
     const originalColor = player.color;
     let flashes = 0;
     const flashInterval = setInterval(() => {
-        player.color = (flashes % 2 === 0) ? 'red' : originalColor; // Correção aqui
+        player.color = (flashes % 2 === 0) ? 'red' : originalColor;
         flashes++;
         if (flashes >= 6) {
             clearInterval(flashInterval);
@@ -333,12 +334,6 @@ function moveLeft() {
 function moveRight() {
     if (player.x < canvas.width - player.width) {
         player.x += 20; // Move o jogador para a direita
-    }
-}
-
-function megaShot() {
-    for (let i = 0; i < 5; i++) {
-        shoot(); // Dispara 5 balas de uma vez
     }
 }
     </script>
