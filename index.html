@@ -59,15 +59,17 @@
           height: 70px;
           margin: 0 15px;
           background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    transition: background-color 0.3s;
-    font-family: 'Press Start 2P', cursive; /* Fonte de game */
+          color: white;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          font-size: 24px;
+          transition: background-color 0.3s;
+          font-family: 'Press Start 2P', cursive; /* Fonte de game *
+        }
+
 .hamburger {
-    font-size: 30px;
+    font-size: 50px; /* Aumenta o tamanho do ícone */
     color: white;
     cursor: pointer;
     position: absolute;
@@ -323,10 +325,7 @@ function toggleMenu() {
             if (player.x < canvas.width - player.width) player.x += 20;
         }
 
-        function toggleMenu() {
-            const isVisible = menuContent.style.display === 'block';
-            menuContent.style.display = isVisible ? 'none' : 'block';
-        }
+        
 function megaShot() {
     const megaBullet = {
         x: player.x + player.width / 2 - 25, // Centraliza a bala
