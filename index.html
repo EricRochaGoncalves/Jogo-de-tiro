@@ -107,203 +107,191 @@
     </div>
 
     <script>
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const xpCounter = document.getElementById('xpCounter');
-let player, bullets, enemies, gameInterval, playerHits, xp;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const xpCounter = document.getElementById('xpCounter');
+        let player, bullets, enemies, gameInterval, playerHits, xp;
 
-function startGame() {
-    document.getElementById('startButton').style.display = 'none';
-    initializeGame();
-    gameInterval = setInterval(gameLoop, 1000 / 60);
-    spawnEnemy();
-}
+        function startGame() {
+            document.getElementById('startButton').style.display = 'none';
+            initializeGame();
+            gameInterval = setInterval(gameLoop, 1000 / 60);
+            spawnEnemy();
+        }
 
-function restartGame() {
-    playerHits = 0;
-    xp = 0;
-    initializeGame();
-    updateXPDisplay();
-    document.getElementById('restartButton').style.display = 'none';
-    gameInterval = setInterval(gameLoop, 1000 / 60);
-    spawnEnemy();
-}
+        function restartGame() {
+            playerHits = 0;
+            xp = 0;
+            initializeGame();
+            updateXPDisplay();
+            document.getElementById('restartButton').style.display = 'none';
+            gameInterval = setInterval(gameLoop, 1000 / 60);
+            spawnEnemy();
+        }
 
-function initializeGame() {
-    player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
-    bullets = [];
-    enemies = [];
-    playerHits = 0;
-    xp = 0;
-    document.getElementById('message').innerText = '';
-}
+        function initializeGame() {
+            player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, color: 'blue' };
+            bullets = [];
+            enemies = [];
+            playerHits = 0;
+            xp = 0;
+            document.getElementById('message').innerText = '';
+        }
 
-function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlayer();
-    updateBullets();
-    updateEnemies();
-    checkCollisions();
-    drawEnemies();
-}
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            updateBullets();
+            updateEnemies();
+            checkCollisions();
+            drawEnemies();
+        }
 
-function drawPlayer() {
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-}
+        function drawPlayer() {
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
 
-function drawEnemies() {
-    enemies.forEach(enemy => {
-        ctx.fillStyle = enemy.color;
-        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-    });
-}
+        function drawEnemies() {
+            enemies.forEach(enemy => {
+                ctx.fillStyle = enemy.color;
+                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            });
+        }
 
-function spawnEnemy() {
-    const enemy = {
-        x: Math.random() * (canvas.width - 40),
-        y: 0,
-        width: 40,
-        height: 40,
-        speed: Math.random() * 1 + 0.5,
-        color: 'red',
-        hitCount: 0
-    };
-    enemies.push(enemy);
-    setTimeout(spawnEnemy, 1000);
-}
+        function spawnEnemy() {
+            const enemy = {
+                x: Math.random() * (canvas.width - 40),
+                y: 0,
+                width: 40,
+                height: 40,
+                speed: Math.random() * 1 + 0.5,
+                color: 'red',
+                hitCount: 0
+            };
+            enemies.push(enemy);
+            setTimeout(spawnEnemy, 1000);
+        }
 
-function updateEnemies() {
-    enemies.forEach(enemy => {
-        enemy.y += enemy.speed;
-    });
-    enemies = enemies.filter(enemy => enemy.y < canvas.height);
-}
+        function updateEnemies() {
+            enemies.forEach(enemy => {
+                enemy.y += enemy.speed;
+            });
+            enemies = enemies.filter(enemy => enemy.y < canvas.height);
+        }
 
-function shoot() {
-    const bulletCount = 9; // Número total de tiros a serem disparados
-    const spread = 30; // Grau de espalhamento dos tiros (em graus)
+        function shoot() {
+            const bullet = {
+                x: player.x + player.width / 2 - 2.5,
+                y: player.y,
+                width: 5,
+                height: 10,
+                speed: 5
+            };
+            bullets.push(bullet);
+        }
 
-    for (let i = 0; i < bulletCount; i++) {
-        const angle = (i - Math.floor(bulletCount / 2)) * (spread / (bulletCount - 1)); // Define um ângulo para cada bala
-        const bullet = {
-            x: player.x + player.width / 2 - 2.5, // Centraliza a bala em relação ao jogador
-            y: player.y,
-            width: 5,
-            height: 10,
-            speed: 10, // Velocidade da bala
-            angle: (270 + angle) * (Math.PI / 180) // Altera para ângulo de 270 graus para disparo vertical
-        };
-        bullets.push(bullet);
-    }
-}
+        function updateBullets() {
+            ctx.fillStyle = 'yellow';
+            bullets.forEach(bullet => {
+                bullet.y -= bullet.speed;
+                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+            });
+            bullets = bullets.filter(bullet => bullet.y > 0);
+        }
 
-// Atualiza a posição das balas em cada frame
-function updateBullets() {
-    ctx.fillStyle = 'yellow';
-    bullets.forEach(bullet => {
-        // Calcula a nova posição da bala usando seno e cosseno
-        bullet.x += bullet.speed * Math.cos(bullet.angle); // Movimento horizontal
-        bullet.y -= bullet.speed * Math.sin(bullet.angle); // Movimento vertical
-        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-    });
-    bullets = bullets.filter(bullet => bullet.y > 0 && bullet.x > 0 && bullet.x < canvas.width);
-}
+        function checkCollisions() {
+            bullets.forEach((bullet, bulletIndex) => {
+                enemies.forEach((enemy, enemyIndex) => {
+                    if (bullet.x < enemy.x + enemy.width &&
+                        bullet.x + bullet.width > enemy.x &&
+                        bullet.y < enemy.y + enemy.height &&
+                        bullet.y + bullet.height > enemy.y) {
+                        enemy.hitCount++;
+                        if (enemy.hitCount <= 3) {
+                            enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
+                        } else {
+                            showXP();
+                            bullets.splice(bulletIndex, 1);
+                            enemies.splice(enemyIndex, 1);
+                        }
+                    }
+                });
+            });
 
-function checkCollisions() {
-    bullets.forEach((bullet, bulletIndex) => {
-        enemies.forEach((enemy, enemyIndex) => {
-            if (bullet.x < enemy.x + enemy.width &&
-                bullet.x + bullet.width > enemy.x &&
-                bullet.y < enemy.y + enemy.height &&
-                bullet.y + bullet.height > enemy.y) {
-                enemy.hitCount++;
-                if (enemy.hitCount <= 3) {
-                    enemy.color = enemy.hitCount % 2 === 0 ? 'yellow' : 'red';
-                } else {
-                    showXP();
-                    bullets.splice(bulletIndex, 1);
-                    enemies.splice(enemyIndex, 1);
+            enemies.forEach(enemy => {
+                if (enemy.y + enemy.height >= player.y && 
+                    enemy.x < player.x + player.width &&
+                    enemy.x + enemy.width > player.x) {
+                    playerHits++;
+                    if (playerHits >= 3) {
+                        gameOver();
+                    } else {
+                        flashPlayer();
+                    }
                 }
-            }
-        });
-    });
-
-    enemies.forEach(enemy => {
-        if (enemy.y + enemy.height >= player.y && 
-            enemy.x < player.x + player.width &&
-            enemy.x + enemy.width > player.x) {
-            playerHits++;
-            if (playerHits >= 3) {
-                gameOver();
-            } else {
-                flashPlayer();
-            }
+            });
         }
-    });
-}
 
-function flashPlayer() {
-    const originalColor = player.color;
-    let flashes = 0;
-    const flashInterval = setInterval(() => {
-        player.color = (flashes % 2 === 0) ? 'yellow' : originalColor;
-        flashes++;
-        if (flashes > 5) {
-            clearInterval(flashInterval);
-            player.color = originalColor;
+        function flashPlayer() {
+            const originalColor = player.color;
+            let flashes = 0;
+            const flashInterval = setInterval(() => {
+                player.color = (flashes % 2 === 0) ? 'yellow' : originalColor;
+                flashes++;
+                if (flashes > 5) {
+                    clearInterval(flashInterval);
+                    player.color = originalColor;
+                }
+            }, 250);
         }
-    }, 250);
-}
 
-function showXP() {
-    xp += 5; 
-    updateXPDisplay();
-    document.getElementById('message').innerText = "+5 XP";
-    setTimeout(() => {
-        document.getElementById('message').innerText = "";
-    }, 1000);
-}
-
-function updateXPDisplay() {
-    xpCounter.innerText = "XP: " + xp;
-}
-
-function gameOver() {
-    clearInterval(gameInterval);
-    document.getElementById('message').innerText = "Game Over!";
-    document.getElementById('restartButton').style.display = 'block';
-    player.color = 'red'; // Altera a cor do jogador em caso de game over
-    shakePlayer(); // Chama a animação de "shake"
-}
-
-function shakePlayer() {
-    const originalX = player.x;
-    let shakes = 0;
-    const shakeInterval = setInterval(() => {
-        player.x += (shakes % 2 === 0 ? 10 : -10);
-        shakes++;
-        if (shakes > 10) {
-            clearInterval(shakeInterval);
-            player.x = originalX; // Restaura a posição original
+        function showXP() {
+            xp += 5; 
+            updateXPDisplay();
+            document.getElementById('message').innerText = "+5 XP";
+            setTimeout(() => {
+                document.getElementById('message').innerText = "";
+            }, 1000);
         }
-    }, 100);
-}
 
-function moveLeft() {
-    if (player.x > 0) player.x -= 20;
-}
+        function updateXPDisplay() {
+            xpCounter.innerText = "XP: " + xp;
+        }
 
-function moveRight() {
-    if (player.x < canvas.width - player.width) player.x += 20;
-}
+        function gameOver() {
+            clearInterval(gameInterval);
+            document.getElementById('message').innerText = "Game Over!";
+            document.getElementById('restartButton').style.display = 'block';
+            player.color = 'red'; // Altera a cor do jogador em caso de game over
+            shakePlayer(); // Chama a animação de "shake"
+        }
 
-function toggleMenu() {
-    const menuContent = document.getElementById('menuContent');
-    const isVisible = menuContent.style.display === 'block';
-    menuContent.style.display = isVisible ? 'none' : 'block';
-}
+        function shakePlayer() {
+            const originalX = player.x;
+            let shakes = 0;
+            const shakeInterval = setInterval(() => {
+                player.x += (shakes % 2 === 0 ? 10 : -10);
+                shakes++;
+               if (shakes > 10) {
+                    clearInterval(shakeInterval);
+                    player.x = originalX; // Restaura a posição original
+                }
+            }, 100);
+        }
 
+        function moveLeft() {
+            if (player.x > 0) player.x -= 20;
+        }
+
+        function moveRight() {
+            if (player.x < canvas.width - player.width) player.x += 20;
+        }
+
+        function toggleMenu() {
+            const isVisible = menuContent.style.display === 'block';
+            menuContent.style.display = isVisible ? 'none' : 'block';
+        }
     </script>
 </body>
 </html>
