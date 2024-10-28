@@ -17,7 +17,7 @@
             align-items: center;
             flex-direction: column;
             height: 100vh;
-            width: 100vw;
+            width: 100vw; /* Define a largura para 100% */
             background-color: #87CEEB;
             font-family: 'Press Start 2P', cursive;
         }
@@ -45,21 +45,21 @@
             background-color: #218838;
         }
         #startButton {
-            width: 200px;
-            height: 70px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 24px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            width: 200px; /* Largura personalizada */
+            height: 70px; /* Altura personalizada */
+            background-color: #007bff; /* Cor de fundo */
+            color: white; /* Cor do texto */
+            border: none; /* Sem borda */
+            border-radius: 10px; /* Bordas arredondadas */
+            font-size: 24px; /* Tamanho da fonte */
+            cursor: pointer; /* Cursor em forma de ponteiro */
+            transition: background-color 0.3s; /* Efeito de transição */
         }
         #startButton:hover {
-            background-color: #0056b3;
+            background-color: #0056b3; /* Cor do botão ao passar o mouse */
         }
         #restartButton {
-            display: none;
+            display: none; /* Inicialmente oculto */
         }
         .message {
             position: absolute;
@@ -181,28 +181,20 @@
         }
 
         function shoot() {
-            const bulletCount = 7; // Número de balas
-            const angleStep = 10; // Ângulo entre balas
-
-            for (let i = -Math.floor(bulletCount / 2); i <= Math.floor(bulletCount / 2); i++) {
-                const angle = i * angleStep; // Calcula o ângulo para cada bala
-                const bullet = {
-                    x: player.x + player.width / 2 - 2.5,
-                    y: player.y,
-                    width: 5,
-                    height: 10,
-                    speed: 5,
-                    angle: angle
-                };
-                bullets.push(bullet);
-            }
+            const bullet = {
+                x: player.x + player.width / 2 - 2.5,
+                y: player.y,
+                width: 5,
+                height: 10,
+                speed: 5
+            };
+            bullets.push(bullet);
         }
 
         function updateBullets() {
             ctx.fillStyle = 'yellow';
             bullets.forEach(bullet => {
                 bullet.y -= bullet.speed;
-                bullet.x += bullet.speed * Math.sin(bullet.angle * Math.PI / 180); // Move em um ângulo
                 ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
             });
             bullets = bullets.filter(bullet => bullet.y > 0);
@@ -271,33 +263,34 @@
             clearInterval(gameInterval);
             document.getElementById('message').innerText = "Game Over!";
             document.getElementById('restartButton').style.display = 'block';
-            player.color = 'red';
-            shakePlayer();
+            player.color = 'red'; // Altera a cor do jogador em caso de game over
+            shakePlayer(); // Chama a animação de "shake"
         }
 
         function shakePlayer() {
             const originalX = player.x;
             let shakes = 0;
             const shakeInterval = setInterval(() => {
-                player.x = (shakes % 2 === 0) ? originalX - 5 : originalX + 5;
+                player.x += (shakes % 2 === 0 ? 10 : -10);
                 shakes++;
-                if (shakes > 10) {
+               if (shakes > 10) {
                     clearInterval(shakeInterval);
-                    player.x = originalX; // Retorna à posição original após o shake
+                    player.x = originalX; // Restaura a posição original
                 }
-            }, 50);
+            }, 100);
         }
 
         function moveLeft() {
-            if (player.x > 0) {
-                player.x -= 10; // Move o jogador para a esquerda
-            }
+            if (player.x > 0) player.x -= 20;
         }
 
         function moveRight() {
-            if (player.x < canvas.width - player.width) {
-                player.x += 10; // Move o jogador para a direita
-            }
+            if (player.x < canvas.width - player.width) player.x += 20;
+        }
+
+        function toggleMenu() {
+            const isVisible = menuContent.style.display === 'block';
+            menuContent.style.display = isVisible ? 'none' : 'block';
         }
     </script>
 </body>
