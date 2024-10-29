@@ -273,6 +273,109 @@ const ctx = canvas.getContext('2d');
 const xpCounter = document.getElementById('xpCounter');
 let player, bullets, enemies, gameInterval, playerHits, xp;
 
+
+
+
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = 800;
+canvas.height = 600;
+
+class Player {
+  constructor() {
+    this.width = 50;
+    this.height = 50;
+    this.x = canvas.width / 2 - this.width / 2;
+    this.y = canvas.height - this.height - 10;
+    this.speed = 5;
+  }
+
+  draw() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+
+  move(direction) {
+    if (direction === "left" && this.x > 0) {
+      this.x -= this.speed;
+    }
+    if (direction === "right" && this.x < canvas.width - this.width) {
+      this.x += this.speed;
+    }
+  }
+}
+
+class Projectile {
+  constructor(x, y, angle) {
+    this.x = x;
+    this.y = y;
+    this.width = 5;
+    this.height = 10;
+    this.speed = 7;
+    this.angle = angle;
+  }
+
+  update() {
+    this.x += this.speed * Math.cos(this.angle);
+    this.y -= this.speed * Math.sin(this.angle);
+  }
+
+  draw() {
+    ctx.fillStyle = "red";
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+}
+
+const player = new Player();
+const projectiles = [];
+
+function shootMultiple() {
+  const centerX = player.x + player.width / 2;
+  const centerY = player.y;
+  
+  // Angulos para cada projétil
+  const angles = [Math.PI / 6, 0, -Math.PI / 6]; // Esquerda, meio, direita
+
+  angles.forEach(angle => {
+    projectiles.push(new Projectile(centerX, centerY, angle));
+  });
+}
+
+function update() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  player.draw();
+
+  projectiles.forEach((projectile, index) => {
+    projectile.update();
+    projectile.draw();
+    
+    // Remove projéteis que saem da tela
+    if (projectile.y < 0) {
+      projectiles.splice(index, 1);
+    }
+  });
+}
+
+function handleKeys(event) {
+  if (event.key === "ArrowLeft") player.move("left");
+  if (event.key === "ArrowRight") player.move("right");
+  if (event.key === " ") shootMultiple();
+}
+
+document.addEventListener("keydown", handleKeys);
+
+function gameLoop() {
+  update();
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+
+
+
+
 function startGame() {
     document.getElementById('startButton').style.display = 'none';
     initializeGame();
